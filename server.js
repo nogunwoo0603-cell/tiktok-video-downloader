@@ -6,56 +6,62 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.post('/api/download', async (req, res) => {
-  const { url } = req.body;
+    const { url } = req.body;
 
-  try {
-    const response = await axios.post('https://www.tikwm.com/api/', {
-      url: url,
-      count: 12,
-      cursor: 0,
-      web: 1
-    });
+    try {
+        const response = await axios.post('https://www.tikwm.com/api/', 
+            new URLSearchParams({ url: url, count: 12, cursor: 0, web: 1 }), 
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                }
+            }
+        );
 
-    const data = response.data.data;
-    if (data && data.play) {
-      // 주소가 http로 시작하지 않으면 앞에 tikwm 도메인을 강제로 붙여줍니다.
-      let realVideoUrl = data.play;
-      if (!realVideoUrl.startsWith('http')) {
-        realVideoUrl = 'https://www.tikwm.com' + realVideoUrl;
-      }
+        const data = response.data.data;
 
-      res.json({
-        success: true,
-        title: data.title || 'TikTok Video',
-        downloadUrl: `/api/stream?videoUrl=${encodeURIComponent(realVideoUrl)}`
-      });
-    } else {
-      res.json({ success: false });
+        if (data && data.play) {
+            let realVideoUrl = data.play;
+            if (!realVideoUrl.startsWith('http')) {
+                realVideoUrl = 'https://www.tikwm.com' + realVideoUrl;
+            }
+
+            res.json({
+                success: true,
+                title: data.title || 'TikTok Video',
+                downloadUrl: `/api/stream?videoUrl=${encodeURIComponent(realVideoUrl)}`
+            });
+        } else {
+            res.json({ success: false });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false });
     }
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
 });
 
+// 스트리밍 다운로드 라우트
 app.get('/api/stream', async (req, res) => {
-  const { videoUrl } = req.query;
-
-  try {
-    const response = await axios({
-      method: 'get',
-      url: videoUrl,
-      responseType: 'stream',
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-      }
-    });
-
-    res.setHeader('Content-Type', 'video/mp4');
-    res.setHeader('Content-Disposition', 'attachment; filename="tiktok_video.mp4"');
-    response.data.pipe(res);
-  } catch (error) {
-    res.status(500).send('영상 다운로드에 실패했습니다.');
-  }
+    const { videoUrl } = req.query;
+    try {
+        const videoStream = await axios({
+            method: 'get',
+            url: videoUrl,
+            responseType: 'stream',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            }
+        });
+        res.setHeader('Content-Disposition', 'attachment; filename="tiktok_video.mp4"');
+        res.setHeader('Content-Type', 'video/mp4');
+        videoStream.data.pipe(res);
+    } catch (error) {
+        res.status(500).send('Download failed');
+    }
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
