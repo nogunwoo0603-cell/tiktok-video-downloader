@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TokDownloader</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background-color: #0f172a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: #1e293b; padding: 2.5rem; border-radius: 20px; width: 100%; max-width: 500px; text-align: center; }
+        h1 { margin-bottom: 0.5rem; }
+        .subtitle { color: #94a3b8; margin-bottom: 2rem; font-size: 0.9rem; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 1.5rem; }
+        input[type="text"] { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: #fff; outline: none; }
+        button { padding: 12px 20px; border-radius: 10px; border: none; background: #6366f1; color: white; font-weight: bold; cursor: pointer; }
+        button:hover { background: #4f46e5; }
+        .result-box { display: none; margin-top: 1.5rem; padding: 1.5rem; background: #0f172a; border-radius: 12px; }
+        .video-title { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 1rem; word-break: break-all; }
+        .download-btn { display: block; width: 100%; padding: 12px 0; background: #10b981; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; }
+        .download-btn:hover { background: #059669; }
+        #loading { display: none; color: #818cf8; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>TokDownloader</h1>
+        <p class="subtitle">워터마크 없는 TikTok 동영상 다운로드</p>
+
+        <div class="input-group">
+            <input type="text" id="tiktok-url" placeholder="TikTok 동영상 링크를 입력하세요">
+            <button onclick="downloadVideo()">분석</button>
+        </div>
+
+        <div id="loading">영상을 분석하고 있습니다...</div>
+
+        <div class="result-box" id="result-box">
+            <div class="video-title" id="video-title"></div>
+            <a href="#" id="dl-link" class="download-btn">동영상 다운로드</a>
+        </div>
+    </div>
+
+    <script>
+        async function downloadVideo() {
+            const url = document.getElementById('tiktok-url').value.trim();
+            const resultBox = document.getElementById('result-box');
+            const loading = document.getElementById('loading');
+            
+            if (!url) {
+                alert('링크를 입력해주세요.');
+                return;
+            }
+
+            resultBox.style.display = 'none';
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url })
+                });
+
+                const data = await response.json();
+                loading.style.display = 'none';
+
+                if (data.success) {
+                    document.getElementById('video-title').innerText = data.title;
+                    const dlBtn = document.getElementById('dl-link');
+                    // 서버 스트리밍 다운로드 주소 연결
+                    dlBtn.href = data.downloadUrl;
+                    resultBox.style.display = 'block';
+                } else {
+                    alert('영상을 분석할 수 없습니다. 링크를 다시 확인해주세요.');
+                }
+            } catch (err) {
+                loading.style.display = 'none';
+                alert('서버 통신 중 오류가 발생했습니다.');
+            }
+        }
+    </script>
+</body>
+</html>
