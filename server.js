@@ -1,12 +1,17 @@
 const express = require('express');
 const axios = require('axios');
-const cors = require('cors');
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// CORS 헤더 직접 설정 (외부 패키지 미사용)
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
+
 app.use(express.json());
 app.use(express.static('public'));
 
