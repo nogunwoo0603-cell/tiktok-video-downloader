@@ -6,97 +6,17 @@
     <title>Video Downloader</title>
     <style>
         * { box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: #0d0d0d;
-            color: #ffffff;
-            margin: 0;
-            padding: 16px;
-        }
-        .card {
-            background: #1a1a1a;
-            padding: 28px 24px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            border: 1px solid #2a2a2a;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 24px;
-            gap: 8px;
-            background: #111111;
-            padding: 6px;
-            border-radius: 12px;
-            border: 1px solid #222222;
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            background: transparent;
-            color: #777777;
-            font-weight: bold;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .tab-btn.active {
-            background: #0095f6;
-            color: #ffffff;
-        }
-        h2 {
-            margin: 0 0 16px 0;
-            font-size: 20px;
-            font-weight: 600;
-        }
-        input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 16px;
-            border-radius: 10px;
-            border: 1px solid #333333;
-            background: #111111;
-            color: #ffffff;
-            font-size: 14px;
-            outline: none;
-        }
-        input:focus {
-            border-color: #0095f6;
-        }
-        button.action-btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            border: none;
-            background: #0095f6;
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-        button.action-btn:hover {
-            background: #0077c5;
-        }
-        button.action-btn:disabled {
-            background: #444444;
-            cursor: not-allowed;
-        }
-        #status {
-            margin-top: 16px;
-            font-size: 14px;
-            color: #aaaaaa;
-            line-height: 1.4;
-            word-break: break-all;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f0f0f; color: #fff; margin: 0; padding: 16px; }
+        .card { background: #1f1f1f; padding: 28px 24px; border-radius: 20px; width: 100%; max-width: 420px; text-align: center; border: 1px solid #2f2f2f; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .tabs { display: flex; margin-bottom: 24px; gap: 8px; background: #121212; padding: 6px; border-radius: 12px; }
+        .tab-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; background: transparent; color: #888; font-weight: bold; font-size: 15px; cursor: pointer; }
+        .tab-btn.active { background: #0095f6; color: #fff; }
+        h2 { margin: 0 0 16px 0; font-size: 20px; }
+        input { width: 100%; padding: 14px; margin-bottom: 16px; border-radius: 10px; border: 1px solid #3f3f3f; background: #121212; color: #fff; font-size: 14px; outline: none; }
+        button.action-btn { width: 100%; padding: 14px; border-radius: 10px; border: none; background: #0095f6; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; }
+        button.action-btn:disabled { background: #444; cursor: not-allowed; }
+        #status { margin-top: 16px; font-size: 14px; color: #aaa; word-break: break-all; }
+        .direct-link { display: inline-block; margin-top: 12px; padding: 10px 16px; background: #22c55e; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -107,8 +27,8 @@
         </div>
 
         <h2 id="title">TikTok Downloader</h2>
-        <input type="text" id="urlInput" placeholder="틱톡 영상 링크를 입력하세요...">
-        <button class="action-btn" id="downloadBtn" onclick="processDownload()">갤러리로 다운로드</button>
+        <input type="text" id="urlInput" placeholder="Paste TikTok link here...">
+        <button class="action-btn" id="downloadBtn" onclick="processDownload()">Download Video</button>
         <div id="status"></div>
     </div>
 
@@ -123,18 +43,18 @@
             const input = document.getElementById('urlInput');
             const status = document.getElementById('status');
 
-            status.innerText = '';
+            status.innerHTML = '';
 
             if (platform === 'tiktok') {
                 tiktokTab.classList.add('active');
                 instaTab.classList.remove('active');
                 title.innerText = 'TikTok Downloader';
-                input.placeholder = '틱톡 영상 링크를 입력하세요...';
+                input.placeholder = 'Paste TikTok link here...';
             } else {
                 instaTab.classList.add('active');
                 tiktokTab.classList.remove('active');
                 title.innerText = 'Instagram Reels Downloader';
-                input.placeholder = '인스타그램 릴스 링크를 입력하세요...';
+                input.placeholder = 'Paste Instagram Reels link here...';
             }
         }
 
@@ -144,18 +64,14 @@
             const btn = document.getElementById('downloadBtn');
             const status = document.getElementById('status');
 
-            if (!url) {
-                alert('올바른 동영상 링크를 입력해주세요.');
-                return;
-            }
+            if (!url) return alert('링크를 입력해 주세요.');
 
             btn.disabled = true;
-            status.innerText = '동영상 분석 중...';
+            status.innerText = '영상 분석 중...';
 
             try {
                 const apiEndpoint = currentPlatform === 'tiktok' ? '/api/tiktok' : '/api/insta';
                 
-                // 1. 영상 링크 분석
                 const parseRes = await fetch(apiEndpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -163,28 +79,32 @@
                 });
 
                 const parseData = await parseRes.json();
-                if (!parseData.success) {
-                    throw new Error(parseData.message || '링크 분석 실패');
+                if (!parseData.success) throw new Error(parseData.message);
+
+                status.innerText = '파일 수신 및 저장 준비 중...';
+
+                // 바이너리 데이터 직접 다운로드 (파일 손상 완벽 방지)
+                try {
+                    const videoFetch = await fetch(parseData.videoUrl);
+                    const blob = await videoFetch.blob();
+                    
+                    const blobUrl = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = blobUrl;
+                    a.download = `${currentPlatform}_${Date.now()}.mp4`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(blobUrl);
+
+                    status.innerText = '다운로드가 완료되었습니다!';
+                } catch (blobErr) {
+                    // 브라우저 직접 수신 실패 시 안전한 원본 직링크 버튼 제공
+                    status.innerHTML = `자동 다운로드가 차단되었습니다.<br>아래 버튼을 눌러 원본 영상을 직접 저장하세요.<br><br>
+                    <a href="${parseData.videoUrl}" target="_blank" download="${currentPlatform}.mp4" class="direct-link">영상 직접 다운로드 / 보기</a>`;
                 }
-
-                status.innerText = '동영상 다운로드 중...';
-
-                // 2. 서버 파이프 다운로드 요청
-                const downloadStreamUrl = `/api/download?url=${encodeURIComponent(parseData.videoUrl)}&platform=${currentPlatform}`;
-                
-                // 모바일 브라우저 다운로드 트리거
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = downloadStreamUrl;
-                document.body.appendChild(iframe);
-
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                }, 60000);
-
-                status.innerText = '다운로드가 시작되었습니다. 갤러리 또는 다운로드 폴더를 확인하세요!';
             } catch (err) {
-                status.innerText = '에러: ' + err.message;
+                status.innerText = '오류 발생: ' + err.message;
             } finally {
                 btn.disabled = false;
             }
