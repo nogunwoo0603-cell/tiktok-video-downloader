@@ -74,7 +74,7 @@
                         throw new Error(data.message || '인스타그램 분석 실패');
                     }
                 } 
-                // 2. 틱톡 링크 처리
+                // 2. 틱톡 링크 처리 (기존 틱톡 분석 로직 100% 원복/유지)
                 else {
                     const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}`);
                     const result = await response.json();
@@ -92,7 +92,7 @@
 
                 loading.style.display = 'none';
 
-                // 공통 강제 다운로드 스트림 연결 (첫 번째 다운로드 창 방식)
+                // 공통 강제 다운로드 스트림 연결
                 document.getElementById('video-title').innerText = title;
                 const dlBtn = document.getElementById('dl-link');
                 dlBtn.href = `/api/stream?videoUrl=${encodeURIComponent(videoUrl)}`;
