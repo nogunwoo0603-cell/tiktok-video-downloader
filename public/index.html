@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TokDownloader - Free TikTok Video Downloader Without Watermark</title>
+    <meta name="description" content="Download TikTok videos without watermark for free in HD quality. Fast and easy TikTok downloader.">
+    <meta name="keywords" content="tiktok downloader, download tiktok video, tiktok watermark remover">
+
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --success-color: #10b981;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; }
+        
+        /* 애드센스 광고 영역 pre-layout */
+        .ad-container { width: 100%; max-width: 600px; background: rgba(255,255,255,0.02); border: 1px dashed #334155; border-radius: 8px; padding: 12px; text-align: center; color: var(--text-sub); font-size: 0.8rem; margin: 15px 0; }
+
+        header { text-align: center; margin-top: 15px; }
+        h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; color: #fff; }
+        p.subtitle { color: var(--text-sub); font-size: 0.95rem; }
+
+        main { width: 100%; max-width: 600px; margin: 20px 0; }
+        .downloader-card { background: var(--card-bg); padding: 2rem; border-radius: 16px; border: 1px solid #334155; }
+
+        .input-group { display: flex; gap: 10px; margin-top: 10px; }
+        input[type="text"] { flex: 1; padding: 14px 16px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: #fff; outline: none; font-size: 0.95rem; }
+        button { padding: 14px 24px; border-radius: 10px; border: none; background: var(--accent-color); color: white; font-weight: 600; cursor: pointer; }
+        button:hover { background: var(--accent-hover); }
+
+        #loading { display: none; text-align: center; color: #818cf8; margin-top: 15px; }
+        
+        .result-box { display: none; margin-top: 1.5rem; padding: 1.2rem; background: #0f172a; border-radius: 10px; border: 1px solid #334155; }
+        .video-title { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 1rem; word-break: break-all; }
+        .download-btn { display: block; width: 100%; padding: 12px 0; background: var(--success-color); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; text-align: center; }
+        .download-btn:hover { background: #059669; }
+
+        /* 애드센스 승인용 SEO 텍스트 세션 */
+        .info-section { background: var(--card-bg); padding: 1.5rem; border-radius: 16px; margin-top: 20px; border: 1px solid #334155; }
+        .info-section h2 { font-size: 1.1rem; margin-bottom: 10px; color: #f1f5f9; }
+        .info-section p, .info-section li { font-size: 0.88rem; color: var(--text-sub); line-height: 1.6; }
+        .info-section ul { margin-left: 20px; margin-top: 8px; }
+
+        footer { text-align: center; margin-top: 20px; font-size: 0.8rem; color: var(--text-sub); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>TokDownloader</h1>
+        <p class="subtitle">Download TikTok Videos Without Watermark for Free</p>
+    </header>
+
+    <main>
+        <div class="downloader-card">
+            <div class="input-group">
+                <input type="text" id="tiktok-url" placeholder="Paste TikTok link here...">
+                <button onclick="downloadVideo()">Analyze</button>
+            </div>
+
+            <div id="loading">Analyzing video...</div>
+
+            <div class="result-box" id="result-box">
+                <div class="video-title" id="video-title"></div>
+                <a href="#" id="dl-link" class="download-btn">Download Video</a>
+            </div>
+        </div>
+
+        <!-- 상단 광고 배치 영역 미리 확보 -->
+        <div class="ad-container">
+            <span>Advertisement Space</span>
+        </div>
+
+        <!-- 콘텐츠 부족 방지용 SEO 설명글 -->
+        <article class="info-section">
+            <h2>How to Download TikTok Videos Without Watermark?</h2>
+            <p>TokDownloader is a free tool to help you save watermark-free TikTok videos. Follow these simple steps:</p>
+            <ul>
+                <li>Copy the TikTok video link from your app or browser.</li>
+                <li>Paste the link into the search box above.</li>
+                <li>Click 'Analyze' and download your HD MP4 video directly.</li>
+            </ul>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 TokDownloader. All rights reserved.</p>
+    </footer>
+
+    <!-- 틱톡 동작 원본 스크립트 그대로 유지 -->
+    <script>
+        async function downloadVideo() {
+            const urlInput = document.getElementById('tiktok-url').value.trim();
+            const resultBox = document.getElementById('result-box');
+            const loading = document.getElementById('loading');
+            
+            if (!urlInput) {
+                alert('Please enter a valid URL.');
+                return;
+            }
+
+            resultBox.style.display = 'none';
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}`);
+                const result = await response.json();
+
+                if (result && result.data && result.data.play) {
+                    let videoUrl = result.data.play;
+                    if (!videoUrl.startsWith('http')) {
+                        videoUrl = 'https://www.tikwm.com' + videoUrl;
+                    }
+
+                    loading.style.display = 'none';
+                    document.getElementById('video-title').innerText = result.data.title || 'TikTok Video';
+                    
+                    const dlBtn = document.getElementById('dl-link');
+                    dlBtn.href = `/api/stream?videoUrl=${encodeURIComponent(videoUrl)}`;
+                    resultBox.style.display = 'block';
+                } else {
+                    throw new Error('Failed to analyze TikTok video.');
+                }
+            } catch (err) {
+                loading.style.display = 'none';
+                alert(err.message || 'Unable to analyze the video link.');
+            }
+        }
+    </script>
+</body>
+</html>
