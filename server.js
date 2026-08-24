@@ -4,7 +4,6 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS 설정
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -14,7 +13,6 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.static('public'));
 
-// 1. 인스타그램 릴스 파싱 API (RapidAPI 연결)
 app.post('/api/insta', async (req, res) => {
     const { url } = req.body;
     if (!url) return res.status(400).json({ success: false, message: 'URL is required.' });
@@ -32,40 +30,33 @@ app.post('/api/insta', async (req, res) => {
         };
 
         const response = await axios.request(options);
-        const data = response.data;
+        const resData = response.data;
 
-        // API 응답 구조 추출
         let videoUrl = null;
-        if (data) {
-            if (typeof data === 'string' && data.startsWith('http')) {
-                videoUrl = data;
-            } else if (data.download_url) {
-                videoUrl = data.download_url;
-            } else if (data.url) {
-                videoUrl = data.url;
-            } else if (data.data && data.data.video_url) {
-                videoUrl = data.data.video_url;
-            } else if (Array.isArray(data) && data[0] && data[0].url) {
-                videoUrl = data[0].url;
-            }
+
+        // 실제 API 응답 구조 (data.media) 파싱
+        if (resData && resData.data) {
+            videoUrl = resData.data.media || resData.data.video_url || resData.data.url;
+        } else if (resData.url) {
+            videoUrl = resData.url;
         }
 
         if (videoUrl) {
             return res.json({
                 success: true,
                 videoUrl: videoUrl,
-                title: 'Instagram Reels Video'
+                title: (resData.data && resData.data.title) || 'Instagram Reels Video'
             });
         }
 
-        throw new Error('Could not find video URL in response');
+        return res.status(400).json({ success: false, message: 'Invalid or private video link.' });
+
     } catch (err) {
         console.error('Insta Error:', err.message);
         return res.status(500).json({ success: false, message: 'Failed to process Instagram link.' });
     }
 });
 
-// 2. 파일 다운로드 스트리밍 API
 app.get('/api/stream', async (req, res) => {
     const videoUrl = req.query.videoUrl;
     if (!videoUrl) return res.status(400).send('Video URL is required.');
@@ -88,6 +79,4 @@ app.get('/api/stream', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
