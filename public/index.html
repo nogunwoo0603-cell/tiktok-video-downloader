@@ -3,147 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TokDownloader - Free TikTok & Instagram Reels Downloader</title>
+    <title>Reels Downloader</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #0f172a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .container { background: #1e293b; padding: 2.5rem; border-radius: 20px; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        h1 { margin-bottom: 0.5rem; font-size: 1.8rem; }
-        .subtitle { color: #94a3b8; margin-bottom: 1.5rem; font-size: 0.9rem; }
-        
-        /* Tab Styles */
-        .tab-menu { display: flex; gap: 8px; margin-bottom: 1.5rem; background: #0f172a; padding: 5px; border-radius: 12px; }
-        .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #94a3b8; font-weight: bold; cursor: pointer; border-radius: 8px; transition: 0.2s; }
-        .tab-btn.active { background: #6366f1; color: #fff; }
-
-        /* Input Form */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .input-group { display: flex; gap: 10px; margin-bottom: 1.5rem; }
-        input[type="text"] { flex: 1; padding: 12px 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: #fff; outline: none; font-size: 0.95rem; }
-        input[type="text"]::placeholder { color: #64748b; }
-        button.action-btn { padding: 12px 20px; border-radius: 10px; border: none; background: #6366f1; color: white; font-weight: bold; cursor: pointer; white-space: nowrap; }
-        button.action-btn:hover { background: #4f46e5; }
-        
-        /* Result Box */
-        .result-box { display: none; margin-top: 1.5rem; padding: 1.5rem; background: #0f172a; border-radius: 12px; }
-        .video-title { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 1rem; word-break: break-all; line-height: 1.4; }
-        .download-btn { display: block; width: 100%; padding: 12px 0; background: #10b981; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; text-align: center; }
-        .download-btn:hover { background: #059669; }
-        #loading { display: none; color: #818cf8; margin-top: 10px; font-size: 0.95rem; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #000; color: #fff; margin: 0; }
+        .card { background: #121212; padding: 24px; border-radius: 16px; width: 90%; max-width: 400px; text-align: center; border: 1px solid #262626; }
+        input { width: 100%; padding: 12px; margin: 12px 0; border-radius: 8px; border: 1px solid #363636; background: #1a1a1a; color: #fff; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #0095f6; color: #fff; font-weight: bold; cursor: pointer; }
+        button:disabled { background: #555; }
+        #status { margin-top: 12px; font-size: 14px; color: #a8a8a8; }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>TokDownloader</h1>
-        <p class="subtitle">Download TikTok & Instagram Reels Videos Without Watermark</p>
-
-        <!-- Navigation Tabs -->
-        <div class="tab-menu">
-            <button class="tab-btn active" onclick="switchTab('tiktok', event)">TikTok</button>
-            <button class="tab-btn" onclick="switchTab('insta', event)">Instagram Reels</button>
-        </div>
-
-        <!-- TikTok Section -->
-        <div id="tab-tiktok" class="tab-content active">
-            <div class="input-group">
-                <input type="text" id="tiktok-url" placeholder="Paste TikTok video link here...">
-                <button class="action-btn" onclick="downloadTikTok()">Download</button>
-            </div>
-        </div>
-
-        <!-- Instagram Reels Section -->
-        <div id="tab-insta" class="tab-content">
-            <div class="input-group">
-                <input type="text" id="insta-url" placeholder="Paste Instagram Reels link here...">
-                <button class="action-btn" onclick="downloadInsta()">Download</button>
-            </div>
-        </div>
-
-        <div id="loading">Analyzing video link...</div>
-
-        <!-- Download Result -->
-        <div class="result-box" id="result-box">
-            <div class="video-title" id="video-title"></div>
-            <a href="#" id="dl-link" class="download-btn">Download Video</a>
-        </div>
+    <div class="card">
+        <h2>Instagram Reels</h2>
+        <input type="text" id="urlInput" placeholder="Paste Instagram Reels link here...">
+        <button id="downloadBtn" onclick="processDownload()">Download to Gallery</button>
+        <div id="status"></div>
     </div>
 
     <script>
-        // Tab Switch Logic
-        function switchTab(type, event) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById('result-box').style.display = 'none';
+        async function processDownload() {
+            const url = document.getElementById('urlInput').value.trim();
+            const btn = document.getElementById('downloadBtn');
+            const status = document.getElementById('status');
 
-            event.target.classList.add('active');
-            if (type === 'tiktok') {
-                document.getElementById('tab-tiktok').classList.add('active');
-            } else {
-                document.getElementById('tab-insta').classList.add('active');
-            }
-        }
+            if (!url) return alert('Please enter a valid link.');
 
-        // TikTok Video Downloader
-        async function downloadTikTok() {
-            const urlInput = document.getElementById('tiktok-url').value.trim();
-            if (!urlInput) return alert('Please enter a valid TikTok link.');
-            
-            processDownload(`https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}`, 'tiktok');
-        }
-
-        // Instagram Reels Downloader
-        async function downloadInsta() {
-            const urlInput = document.getElementById('insta-url').value.trim();
-            if (!urlInput) return alert('Please enter a valid Instagram Reels link.');
-
-            processDownload('/api/insta', 'insta', urlInput);
-        }
-
-        // Process Download Request
-        async function processDownload(endpoint, platform, rawUrl = '') {
-            const resultBox = document.getElementById('result-box');
-            const loading = document.getElementById('loading');
-
-            resultBox.style.display = 'none';
-            loading.style.display = 'block';
+            btn.disabled = true;
+            status.innerText = 'Analyzing video...';
 
             try {
-                let videoUrl = '';
-                let title = '';
+                // 1. 영상 URL 파싱
+                const parseRes = await fetch('/api/insta', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
 
-                if (platform === 'insta') {
-                    const res = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ url: rawUrl })
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        videoUrl = data.videoUrl;
-                        title = data.title;
-                    } else throw new Error(data.message || 'Failed to process Instagram video.');
-                } else {
-                    const res = await fetch(endpoint);
-                    const result = await res.json();
-                    if (result && result.data && result.data.play) {
-                        videoUrl = result.data.play;
-                        if (!videoUrl.startsWith('http')) videoUrl = 'https://www.tikwm.com' + videoUrl;
-                        title = result.data.title || 'TikTok Video';
-                    } else throw new Error('Failed to process TikTok video.');
-                }
+                const parseData = await parseRes.json();
+                if (!parseData.success) throw new Error(parseData.message);
 
-                loading.style.display = 'none';
-                document.getElementById('video-title').innerText = title;
-                
-                // Stream URL to trigger forced file download
-                document.getElementById('dl-link').href = `/api/stream?videoUrl=${encodeURIComponent(videoUrl)}`;
-                resultBox.style.display = 'block';
+                status.innerText = 'Downloading video file...';
 
+                // 2. 바이너리 스트림 파일 수신
+                const streamUrl = `/api/stream?videoUrl=${encodeURIComponent(parseData.videoUrl)}`;
+                const fileRes = await fetch(streamUrl);
+                const blob = await fileRes.blob();
+
+                // 3. 모바일 갤러리/사진 저장용 링크 바인딩
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = `reels_${Date.now()}.mp4`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+
+                status.innerText = 'Download complete! Check your gallery or downloads.';
             } catch (err) {
-                loading.style.display = 'none';
-                alert('Unable to analyze the video. Please check if the link is correct.');
+                status.innerText = 'Error: ' + err.message;
+            } finally {
+                btn.disabled = false;
             }
         }
     </script>
