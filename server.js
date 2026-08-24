@@ -34,10 +34,9 @@ app.post('/api/insta', async (req, res) => {
 
         let videoUrl = null;
 
-        // RapidAPI 사진 응답 구조 기반 정확한 파싱 (data.url)
-        if (resData && resData.data && resData.data.url) {
-            videoUrl = resData.data.url;
-        } else if (resData && resData.url) {
+        if (resData && resData.data) {
+            videoUrl = resData.data.media || resData.data.video || resData.data.url;
+        } else if (resData.url) {
             videoUrl = resData.url;
         }
 
@@ -45,11 +44,11 @@ app.post('/api/insta', async (req, res) => {
             return res.json({
                 success: true,
                 videoUrl: videoUrl,
-                title: (resData.data && resData.data.title) || 'Instagram Reels Video'
+                title: 'Instagram Reels Video'
             });
         }
 
-        return res.status(400).json({ success: false, message: 'Invalid or private video link.' });
+        return res.status(400).json({ success: false, message: 'Failed to extract video URL.' });
 
     } catch (err) {
         console.error('Insta Error:', err.message);
@@ -57,26 +56,13 @@ app.post('/api/insta', async (req, res) => {
     }
 });
 
-app.get('/api/stream', async (req, res) => {
+// 파일 리다이렉트 처리 (인스타그램 CDN 직연결로 용량 손실 방지)
+app.get('/api/stream', (req, res) => {
     const videoUrl = req.query.videoUrl;
     if (!videoUrl) return res.status(400).send('Video URL is required.');
-
-    try {
-        const response = await axios({
-            method: 'get',
-            url: videoUrl,
-            responseType: 'stream',
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            }
-        });
-
-        res.setHeader('Content-Disposition', 'attachment; filename="instagram_reels.mp4"');
-        res.setHeader('Content-Type', 'video/mp4');
-        response.data.pipe(res);
-    } catch (err) {
-        res.status(500).send('Download stream error.');
-    }
+    
+    // 서버를 거치지 않고 원본 고화질 영상 링크로 직접 연결
+    res.redirect(videoUrl);
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
