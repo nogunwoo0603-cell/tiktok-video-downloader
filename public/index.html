@@ -57,10 +57,10 @@
             const btn = document.getElementById('downloadBtn');
             const status = document.getElementById('status');
 
-            if (!url) return alert('Please enter a valid video link.');
+            if (!url) return alert('Please enter a valid link.');
 
             btn.disabled = true;
-            status.innerText = 'Analyzing video...';
+            status.innerText = 'Analyzing link...';
 
             try {
                 const apiEndpoint = currentPlatform === 'tiktok' ? '/api/tiktok' : '/api/insta';
@@ -74,19 +74,22 @@
                 const parseData = await parseRes.json();
                 if (!parseData.success) throw new Error(parseData.message);
 
-                status.innerText = 'Starting download...';
+                status.innerText = 'Downloading video file...';
 
-                // 백엔드 스트림을 통한 직접 파일 다운로드 실행 (깨짐 현상 방지)
-                const downloadUrl = `/api/stream?videoUrl=${encodeURIComponent(parseData.videoUrl)}`;
-                
+                // 원본 파일 손상 없이 클라이언트에서 직접 저장
+                const videoRes = await fetch(parseData.videoUrl);
+                const blob = await videoRes.blob();
+
+                const blobUrl = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = downloadUrl;
+                a.href = blobUrl;
                 a.download = `${currentPlatform}_${Date.now()}.mp4`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
 
-                status.innerText = 'Download started! Check your gallery or downloads.';
+                status.innerText = 'Download complete! Check your downloads.';
             } catch (err) {
                 status.innerText = 'Error: ' + err.message;
             } finally {
