@@ -22,19 +22,36 @@ app.get('/api/stream', async (req, res) => {
     if (!videoUrl) return res.status(400).send('URL이 필요합니다.');
 
     try {
+        const isInsta = videoUrl.includes('cdninstagram.com') || videoUrl.includes('fbcdn.net') || videoUrl.includes('instagram');
+
+        const headers = {
+            'User-Agent': getRandomUserAgent(),
+            'Accept': '*/*',
+            'Accept-Encoding': 'identity',
+            'Connection': 'keep-alive'
+        };
+
+        if (isInsta) {
+            headers['Referer'] = 'https://www.instagram.com/';
+            headers['Origin'] = 'https://www.instagram.com';
+        }
+
         const videoStream = await axios({
             method: 'get',
             url: videoUrl,
             responseType: 'stream',
-            headers: {
-                'User-Agent': getRandomUserAgent(),
-                'Referer': 'https://www.instagram.com/'
-            },
-            timeout: 10000
+            headers: headers,
+            timeout: 15000
         });
 
-        res.setHeader('Content-Disposition', 'attachment; filename="download_video.mp4"');
+        // 파일 손상 방지용 헤더 세팅
+        res.setHeader('Content-Disposition', 'attachment; filename="video.mp4"');
         res.setHeader('Content-Type', 'video/mp4');
+
+        if (videoStream.headers['content-length']) {
+            res.setHeader('Content-Length', videoStream.headers['content-length']);
+        }
+
         videoStream.data.pipe(res);
     } catch (error) {
         console.error('Streaming error:', error.message);
@@ -42,15 +59,32 @@ app.get('/api/stream', async (req, res) => {
     }
 });
 
-// 인스타그램 릴스 파싱 전용 안전 API
+// 인스타그램 릴스 파싱 전용 API (인스타그램 전용 오픈 API 적용)
 app.post('/api/insta', async (req, res) => {
     const { url } = req.body;
     if (!url) return res.json({ success: false, message: 'URL을 입력해주세요.' });
 
     try {
-        // 전문 파싱 노드 우회 호출 (내 서버 IP 직접 노출 방지)
-        const response = await axios.post('https://v3.tikwm.com/api/', 
-            new URLSearchParams({ url: url }), 
+        // 인스타그램 전용 파싱 인스턴스 호출
+        const response = await axios.get(`https://api.cobalt.tools/api/json?url=${encodeURIComponent(url)}`, {
+            headers: {
+                'User-Agent': getRandomUserAgent(),
+                'Accept': 'application/json'
+            },
+            timeout: 10000
+        });
+
+        if (response.data && response.data.url) {
+            return res.json({
+                success: true,
+                title: 'Instagram Reel',
+                videoUrl: response.data.url
+            });
+        }
+
+        // 2차 백업 파서 (공용 인스타그램 다운로드 엔드포인트)
+        const backupRes = await axios.post('https://saveig.app/api/ajaxSearch', 
+            new URLSearchParams({ q: url, t: 'media', lang: 'en' }), 
             {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -60,19 +94,23 @@ app.post('/api/insta', async (req, res) => {
             }
         );
 
-        if (response.data && response.data.data) {
-            const data = response.data.data;
-            res.json({
-                success: true,
-                title: data.title || 'Instagram Reel',
-                videoUrl: data.play
-            });
-        } else {
-            res.json({ success: false, message: '영상을 찾을 수 없습니다.' });
+        if (backupRes.data && backupRes.data.data) {
+            const html = backupRes.data.data;
+            const match = html.match(/href="(https?:\/\/[^"]+)"/);
+            if (match && match[1]) {
+                return res.json({
+                    success: true,
+                    title: 'Instagram Reel',
+                    videoUrl: match[1].replace(/&amp;/g, '&')
+                });
+            }
         }
+
+        return res.json({ success: false, message: '인스타그램 영상을 찾을 수 없습니다.' });
+
     } catch (error) {
         console.error('Instagram parsing error:', error.message);
-        res.json({ success: false, message: '서버 분석 실패' });
+        return res.json({ success: false, message: '인스타그램 분석 실패' });
     }
 });
 
