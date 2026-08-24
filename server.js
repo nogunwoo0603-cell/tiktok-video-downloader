@@ -1,11 +1,10 @@
 const express = require('express');
 const axios = require('axios');
-const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS 헤더 직접 설정 (외부 패키지 미사용)
+// CORS 설정
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -15,34 +14,41 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.static('public'));
 
-// 1. 인스타그램 릴스 파싱 API
+// 1. 인스타그램 릴스 전용 백엔드 파싱 API
 app.post('/api/insta', async (req, res) => {
     const { url } = req.body;
     if (!url) return res.status(400).json({ success: false, message: 'URL is required.' });
 
     try {
-        const response = await axios.post('https://v3.tikwm.com/api/fetch', null, {
-            params: { url: url },
+        // 백엔드 요청 헤더 위장 (봇 차단 방지)
+        const response = await axios.get(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`, {
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            }
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'application/json'
+            },
+            timeout: 10000
         });
 
-        if (response.data && response.data.data) {
+        if (response.data && response.data.data && response.data.data.play) {
+            let videoUrl = response.data.data.play;
+            if (!videoUrl.startsWith('http')) {
+                videoUrl = 'https://www.tikwm.com' + videoUrl;
+            }
             return res.json({
                 success: true,
-                videoUrl: response.data.data.play || response.data.data.wmplay,
+                videoUrl: videoUrl,
                 title: response.data.data.title || 'Instagram Reels Video'
             });
         }
 
-        throw new Error('Failed to parse video');
+        return res.status(400).json({ success: false, message: 'Could not extract video. Check link validity.' });
     } catch (err) {
-        return res.status(500).json({ success: false, message: 'Failed to process Instagram link.' });
+        console.error('Insta Error:', err.message);
+        return res.status(500).json({ success: false, message: 'Server error processing video.' });
     }
 });
 
-// 2. 파일 다운로드 스트리밍 API (강제 파일 저장)
+// 2. 강제 다운로드 스트리밍 API
 app.get('/api/stream', async (req, res) => {
     const videoUrl = req.query.videoUrl;
     if (!videoUrl) return res.status(400).send('Video URL is required.');
@@ -57,7 +63,7 @@ app.get('/api/stream', async (req, res) => {
             }
         });
 
-        res.setHeader('Content-Disposition', 'attachment; filename="downloaded_video.mp4"');
+        res.setHeader('Content-Disposition', 'attachment; filename="video.mp4"');
         res.setHeader('Content-Type', 'video/mp4');
         response.data.pipe(res);
     } catch (err) {
