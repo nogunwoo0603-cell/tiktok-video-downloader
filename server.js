@@ -34,10 +34,10 @@ app.post('/api/insta', async (req, res) => {
 
         let videoUrl = null;
 
-        // 실제 API 응답 구조 (data.media) 파싱
-        if (resData && resData.data) {
-            videoUrl = resData.data.media || resData.data.video_url || resData.data.url;
-        } else if (resData.url) {
+        // RapidAPI 사진 응답 구조 기반 정확한 파싱 (data.url)
+        if (resData && resData.data && resData.data.url) {
+            videoUrl = resData.data.url;
+        } else if (resData && resData.url) {
             videoUrl = resData.url;
         }
 
