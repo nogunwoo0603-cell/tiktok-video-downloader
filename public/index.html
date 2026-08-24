@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TokDownloader - 틱톡 & 인스타그램 릴스 다운로더</title>
+    <title>TokDownloader - TikTok Video Downloader</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
         body { background-color: #0f172a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
@@ -25,61 +25,29 @@
 
     <div class="container">
         <h1>TokDownloader</h1>
-        <p class="subtitle">워터마크 없는 TikTok 및 Instagram Reels 다운로드</p>
+        <p class="subtitle">Download TikTok Videos Without Watermark</p>
 
         <div class="input-group">
-            <input type="text" id="tiktok-url" placeholder="TikTok 또는 Instagram Reels 링크를 입력하세요">
-            <button onclick="downloadVideo()">분석</button>
+            <input type="text" id="tiktok-url" placeholder="Paste TikTok video link here...">
+            <button onclick="downloadVideo()">Analyze</button>
         </div>
 
-        <div id="loading">영상을 분석하고 있습니다...</div>
+        <div id="loading">Analyzing video...</div>
 
         <div class="result-box" id="result-box">
             <div class="video-title" id="video-title"></div>
-            <a href="#" id="dl-link" class="download-btn">동영상 다운로드</a>
+            <a href="#" id="dl-link" class="download-btn">Download Video</a>
         </div>
     </div>
 
     <script>
-        function extractShortcode(url) {
-            const match = url.match(/(?:reels?|p|tv)\/([A-Za-z0-9_-]+)/);
-            return match ? match[1] : null;
-        }
-
-        // 인스타그램 전용: 사용자 브라우저 IP 이용 우회 파싱
-        async function parseInstaInBrowser(url) {
-            const shortcode = extractShortcode(url);
-            if (!shortcode) throw new Error('올바른 인스타그램 릴스 링크가 아닙니다.');
-
-            const targetUrl = `https://www.instagram.com/p/${shortcode}/embed/captioned/`;
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
-            
-            const res = await fetch(proxyUrl);
-            const data = await res.json();
-            const html = data.contents;
-
-            let videoUrl = '';
-            const match = html.match(/"video_url":"([^"]+)"/);
-            if (match && match[1]) {
-                videoUrl = JSON.parse(`"${match[1]}"`);
-            } else {
-                const ogMatch = html.match(/<meta property="og:video" content="([^"]+)"/);
-                if (ogMatch && ogMatch[1]) {
-                    videoUrl = ogMatch[1].replace(/&amp;/g, '&');
-                }
-            }
-
-            if (!videoUrl) throw new Error('영상을 추출할 수 없습니다. (비공개 계정 여부 확인)');
-            return videoUrl;
-        }
-
         async function downloadVideo() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const resultBox = document.getElementById('result-box');
             const loading = document.getElementById('loading');
             
             if (!urlInput) {
-                alert('링크를 입력해주세요.');
+                alert('Please enter a valid URL.');
                 return;
             }
 
@@ -87,42 +55,27 @@
             loading.style.display = 'block';
 
             try {
-                let videoUrl = '';
-                let title = '';
+                const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}`);
+                const result = await response.json();
 
-                // 1. 인스타그램 링크 처리
-                if (urlInput.includes('instagram.com')) {
-                    videoUrl = await parseInstaInBrowser(urlInput);
-                    title = 'Instagram Reel';
-                } 
-                // 2. 틱톡 링크 처리 (기존 틱톡 로직 100% 동일 유지)
-                else {
-                    const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}`);
-                    const result = await response.json();
-
-                    if (result && result.data && result.data.play) {
-                        videoUrl = result.data.play;
-                        if (!videoUrl.startsWith('http')) {
-                            videoUrl = 'https://www.tikwm.com' + videoUrl;
-                        }
-                        title = result.data.title || 'TikTok Video';
-                    } else {
-                        throw new Error('틱톡 분석 실패');
+                if (result && result.data && result.data.play) {
+                    let videoUrl = result.data.play;
+                    if (!videoUrl.startsWith('http')) {
+                        videoUrl = 'https://www.tikwm.com' + videoUrl;
                     }
+
+                    loading.style.display = 'none';
+                    document.getElementById('video-title').innerText = result.data.title || 'TikTok Video';
+                    
+                    const dlBtn = document.getElementById('dl-link');
+                    dlBtn.href = `/api/stream?videoUrl=${encodeURIComponent(videoUrl)}`;
+                    resultBox.style.display = 'block';
+                } else {
+                    throw new Error('Failed to analyze TikTok video.');
                 }
-
-                loading.style.display = 'none';
-
-                document.getElementById('video-title').innerText = title;
-                const dlBtn = document.getElementById('dl-link');
-                
-                // 스트림 라우트로 전달하여 다운로드
-                dlBtn.href = `/api/stream?videoUrl=${encodeURIComponent(videoUrl)}`;
-                resultBox.style.display = 'block';
-
             } catch (err) {
                 loading.style.display = 'none';
-                alert(err.message || '영상을 분석할 수 없습니다.');
+                alert(err.message || 'Unable to analyze the video link.');
             }
         }
     </script>
