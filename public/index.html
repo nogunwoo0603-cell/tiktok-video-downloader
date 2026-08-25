@@ -10,6 +10,13 @@
     <link rel="alternate" hreflang="x-default" href="https://tiktok-video-downloader-3pt0.onrender.com/" />
     <link rel="alternate" hreflang="en" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=en" />
     <link rel="alternate" hreflang="ko" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=ko" />
+    <link rel="alternate" hreflang="id" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=id" />
+    <link rel="alternate" hreflang="de" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=de" />
+    <link rel="alternate" hreflang="es" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=es" />
+    <link rel="alternate" hreflang="fr" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=fr" />
+    <link rel="alternate" hreflang="ja" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=ja" />
+    <link rel="alternate" hreflang="pt" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=pt" />
+    <link rel="alternate" hreflang="ru" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=ru" />
 
     <style>
         :root {
@@ -50,6 +57,9 @@
         .download-btn-main { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 18px 0; background: var(--accent-gradient); color: white; text-decoration: none; border-radius: 14px; font-weight: 800; font-size: 1.1rem; text-align: center; margin-bottom: 12px; }
         .download-btn-sub { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 12px 0; background: #ffffff; color: #374151; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 0.92rem; text-align: center; border: 1px solid var(--border-color); }
 
+        /* 광고 영역 스타일 복원 */
+        .ad-container { width: 100%; max-width: 900px; background: #ffffff; border: 1px dashed var(--border-color); border-radius: 12px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 0.85rem; margin: 25px 0; }
+
         /* 풍부한 텍스트 콘텐츠 영역 (SEO 핵심) */
         .content-article { background: var(--card-bg); padding: 2.5rem; border-radius: 24px; margin-top: 30px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
         .content-article h2 { font-size: 1.4rem; margin-bottom: 15px; color: #111827; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px; }
@@ -87,9 +97,27 @@
             <a href="/dmca" onclick="routePage('dmca', event)">DMCA</a>
             <a href="/contact" onclick="routePage('contact', event)">Contact</a>
         </div>
+        <!-- 19개국 다국어 셀렉터 복원 -->
         <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
             <option value="en">English</option>
             <option value="ko">한국어</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="ja">日本語</option>
+            <option value="pt">Português (Brasil)</option>
+            <option value="ru">Русский</option>
+            <option value="tr">Türkçe</option>
+            <option value="vi">Tiếng Việt</option>
+            <option value="ar">العربية</option>
+            <option value="th">ไทย</option>
+            <option value="it">Italiano</option>
+            <option value="pl">Polskie</option>
+            <option value="ms">Bahasa Melayu</option>
+            <option value="uk">Ukrainian</option>
+            <option value="nl">Nederlands</option>
+            <option value="ro">Romanian</option>
         </select>
     </nav>
 
@@ -141,13 +169,13 @@
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- 4. 독립된 DMCA 저작권 페이지 뷰 -->
+        <!-- 4. 독립된 DMCA 저작권 페이지 뷰 (이메일 변경 완료) -->
         <div id="view-dmca" class="page-view policy-container">
             <h2>DMCA Copyright Policy</h2>
             <p><strong>Last updated: January 2026</strong></p>
             <p>TokDownloader respects the intellectual property rights of others and expects its users to do same. In accordance with the Digital Millennium Copyright Act (DMCA), we will respond expeditiously to claims of copyright infringement committed using the TokDownloader service.</p>
             <h3>Notice of Copyright Infringement</h3>
-            <p>If you are a copyright owner, or are authorized to act on behalf of one, or authorized to act under any exclusive right under copyright, please report alleged copyright infringements taking place on or through our site by sending a notice containing the following details to our designated email: <strong>dmca@tokdownloader.com</strong></p>
+            <p>If you are a copyright owner, or are authorized to act on behalf of one, or authorized to act under any exclusive right under copyright, please report alleged copyright infringements taking place on or through our site by sending a notice containing the following details to our designated email: <strong>velotok67@gmail.com</strong></p>
             <ul>
                 <li>Identification of the copyrighted work claimed to have been infringed.</li>
                 <li>Identification of the material that is claimed to be infringing.</li>
@@ -156,19 +184,24 @@
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- 5. 독립된 문의하기 페이지 뷰 -->
+        <!-- 5. 독립된 문의하기 페이지 뷰 (이메일 변경 완료) -->
         <div id="view-contact" class="page-view policy-container">
             <h2>Contact Us</h2>
             <p><strong>Last updated: January 2026</strong></p>
             <p>If you have any questions, concerns, or technical issues regarding our TikTok video downloader service, please feel free to get in touch with our administrative team.</p>
             <h3>Support Channels</h3>
-            <p>General Inquiries & Feedback: <strong>support@tokdownloader.com</strong></p>
-            <p>Copyright & DMCA Concerns: <strong>dmca@tokdownloader.com</strong></p>
+            <p>General Inquiries & Feedback: <strong>velotok67@gmail.com</strong></p>
+            <p>Copyright & DMCA Concerns: <strong>velotok67@gmail.com</strong></p>
             <p>We strive to review and respond to all inquiries within 24 to 48 business hours.</p>
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- 대규모 풍부한 텍스트 콘텐츠 블로그 섹션 (애드센스 통과를 위한 필수 정보성 본문) -->
+        <!-- 광고 띄울 창 공간 복원 -->
+        <div class="ad-container">
+            <span>- Advertisement Space -</span>
+        </div>
+
+        <!-- 대규모 풍부한 텍스트 콘텐츠 블로그 섹션 -->
         <article class="content-article" id="blog-section">
             <h2>Comprehensive Guide: Everything You Need to Know About TikTok Content Preservation</h2>
             <p>TikTok has rapidly evolved into the dominant global ecosystem for creative micro-video content, independent music discovery, viral culture, and educational tutorials. With over a billion active users worldwide, millions of videos are uploaded daily. While the mobile platform provides built-in sharing features, saving files natively often retains platform watermarks, creator usernames, and compression artifacts that limit offline viewing quality.</p>
@@ -204,6 +237,41 @@
     </footer>
 
     <script>
+        const i18n = {
+            en: { title: "TikTok Video Downloader", subtitle: "Download TikTok videos without watermark in HD quality for free", placeholder: "Paste TikTok video link here...", btn: "Analyze" },
+            ko: { title: "틱톡 동영상 다운로더", subtitle: "워터마크 없는 깨끗한 HD 틱톡 영상을 무료로 다운로드하세요", placeholder: "틱톡 비디오 링크를 여기에 붙여넣으세요...", btn: "분석하기" },
+            id: { title: "Pengunduh Video TikTok", subtitle: "Unduh video TikTok tanpa watermark kualitas HD gratis", placeholder: "Tempel tautan video TikTok di sini...", btn: "Analisis" },
+            de: { title: "TikTok Video Downloader", subtitle: "TikTok-Videos ohne Wasserzeichen kostenlos in HD herunterladen", placeholder: "TikTok-Videolink hier einfügen...", btn: "Analysieren" },
+            es: { title: "Descargador de Videos de TikTok", subtitle: "Descarga videos de TikTok sin marca de agua en calidad HD gratis", placeholder: "Pega el enlace del video de TikTok aquí...", btn: "Analizar" },
+            fr: { title: "Téléchargeur de Vidéos TikTok", subtitle: "Téléchargez des vidéos TikTok sans filigrane en qualité HD gratuitement", placeholder: "Collez le lien de la vidéo TikTok ici...", btn: "Analyser" },
+            ja: { title: "TikTok Video Downloader", subtitle: "ウォーターマークなしのHD TikTok動画を無料でダウンロード", placeholder: "TikTok動画のリンクをここに貼り付け...", btn: "解析する" },
+            pt: { title: "Baixar Videos do TikTok", subtitle: "Baixe vídeos do TikTok sem marca d'água em HD gratuitamente", placeholder: "Cole o link do vídeo do TikTok aqui...", btn: "Analisar" },
+            ru: { title: "Загрузчик Видео TikTok", subtitle: "Скачивайте видео TikTok без водяных знаков в HD бесплатно", placeholder: "Вставьте ссылку на видео TikTok...", btn: "Анализировать" },
+            tr: { title: "TikTok Video İndirici", subtitle: "Filigramsız HD TikTok videolarını ücretsiz indirin", placeholder: "TikTok video bağlantısını buraya yapıştırın...", btn: "Analiz Et" },
+            vi: { title: "Tải Video TikTok", subtitle: "Tải video TikTok không logo chất lượng HD miễn phí", placeholder: "Dán liên kết video TikTok vào đây...", btn: "Phân tích" },
+            ar: { title: "منزّل فيديوهات تيك توك", subtitle: "تحميل فيديوهات تيك توك بدون علامة مائية مجاناً بجودة عالية", placeholder: "الصق رابط فيديو تيك توك هنا...", btn: "تحليل" },
+            th: { title: "ดาวน์โหลดวิดีโอ TikTok", subtitle: "ดาวน์โหลดวิดีโอ TikTok ไม่มีลายน้ำ ฟรี คุณภาพ HD", placeholder: "วางลิงก์วิดีโอ TikTok ที่นี่...", btn: "วิเคราะห์" },
+            it: { title: "Download Video TikTok", subtitle: "Scarica video TikTok senza filigrana in qualità HD gratis", placeholder: "Incolla qui il link del video TikTok...", btn: "Analizza" },
+            pl: { title: "Pobieranie Wideo z TikTok", subtitle: "Pobieraj filmy z TikTok bez znaku wodnego w jakości HD za darmo", placeholder: "Wklej link do filmu z TikTok tutaj...", btn: "Analizuj" },
+            ms: { title: "Muat Turun Video TikTok", subtitle: "Muat turun video TikTok tanpa tanda air dalam kualiti HD percuma", placeholder: "Tampal pautan video TikTok di sini...", btn: "Analisis" },
+            uk: { title: "Завантажувач Відео TikTok", subtitle: "Завантажуйте відео TikTok без водяного знака в HD безкоштовно", placeholder: "Вставте посилання на відео TikTok...", btn: "Аналізувати" },
+            nl: { title: "TikTok Video Downloader", subtitle: "Download TikTok-video's zonder watermerk gratis in HD-kwaliteit", placeholder: "Plak TikTok-videolink hier...", btn: "Analyseren" },
+            ro: { title: "Descărcare Video TikTok", subtitle: "Descărcați videoclipuri TikTok fără filigran în calitate HD gratuit", placeholder: "Lipiți linkul videoclipului TikTok aici...", btn: "Analizează" }
+        };
+
+        function changeLanguage(lang) {
+            const data = i18n[lang] || i18n.en;
+            document.getElementById('txt-title').innerText = data.title;
+            document.getElementById('txt-subtitle').innerText = data.subtitle;
+            document.getElementById('tiktok-url').placeholder = data.placeholder;
+            document.getElementById('txt-btn').innerText = data.btn;
+            
+            if (history.pushState) {
+                const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?lang=' + lang;
+                window.history.pushState({path:newurl},'',newurl);
+            }
+        }
+
         // 싱글 페이지 내에서 가짜 URL 주소 변경(History API) 및 뷰 전환 처리
         function routePage(pageName, event) {
             if (event) event.preventDefault();
@@ -211,6 +279,7 @@
             // 모든 뷰 숨기기
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
             document.getElementById('blog-section').style.display = (pageName === 'home') ? 'block' : 'none';
+            document.querySelector('.ad-container').style.display = (pageName === 'home') ? 'block' : 'none';
 
             // 선택된 뷰 보이기
             const targetView = document.getElementById('view-' + pageName);
@@ -244,6 +313,13 @@
 
         // 초기 진입 시 경로 체크
         window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lang = urlParams.get('lang');
+            if (lang && i18n[lang]) {
+                document.getElementById('langSelect').value = lang;
+                changeLanguage(lang);
+            }
+
             let path = window.location.pathname.replace('/', '');
             if(path && document.getElementById('view-' + path)) {
                 routePage(path, null);
