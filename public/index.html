@@ -7,13 +7,23 @@
     <meta name="description" content="Download TikTok videos without watermark for free in Ultra HD. Fast, secure, and compatible with all devices.">
     <meta name="keywords" content="tiktok downloader, download tiktok video, no watermark, tiktok saver, mp4 downloader">
 
+    <!-- 글로벌 SEO 검색엔진 연동 태그 -->
+    <link rel="alternate" hreflang="x-default" href="https://tiktok-video-downloader-3pt0.onrender.com/" />
+    <link rel="alternate" hreflang="en" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=en" />
+    <link rel="alternate" hreflang="ko" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=ko" />
+    <link rel="alternate" hreflang="id" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=id" />
+    <link rel="alternate" hreflang="de" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=de" />
+    <link rel="alternate" hreflang="es" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=es" />
+    <link rel="alternate" hreflang="fr" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=fr" />
+    <link rel="alternate" hreflang="ja" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=ja" />
+    <link rel="alternate" hreflang="pt" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=pt" />
+    <link rel="alternate" hreflang="ru" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=ru" />
+
     <style>
         :root {
             --bg-color: #0b0f19;
             --card-bg: rgba(30, 41, 59, 0.7);
             --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            --tiktok-pink: #fe2c55;
-            --tiktok-cyan: #25f4ee;
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
             --border-color: rgba(255, 255, 255, 0.1);
@@ -22,17 +32,14 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px; line-height: 1.6; }
 
-        /* Navigation & Language Switcher */
         nav { width: 100%; max-width: 800px; display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
         .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; }
-        .lang-select { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 20px; outline: none; cursor: pointer; }
+        .lang-select { background: rgba(15, 23, 42, 0.9); color: var(--text-main); border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 20px; outline: none; cursor: pointer; font-size: 0.9rem; }
 
-        /* Header */
         header { text-align: center; margin: 30px 0 20px; }
         h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; background: linear-gradient(to right, #fff, var(--text-sub)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         p.subtitle { color: var(--text-sub); font-size: 1rem; }
 
-        /* Main Downloader Box */
         main { width: 100%; max-width: 700px; }
         .downloader-card { background: var(--card-bg); backdrop-filter: blur(16px); padding: 2.5rem 2rem; border-radius: 24px; border: 1px solid var(--border-color); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
 
@@ -45,29 +52,24 @@
 
         #loading { display: none; text-align: center; color: #38bdf8; margin-top: 20px; font-weight: 600; }
         
-        /* Result Box */
         .result-box { display: none; margin-top: 1.5rem; padding: 1.5rem; background: rgba(15, 23, 42, 0.9); border-radius: 16px; border: 1px solid var(--border-color); }
         .video-title { font-size: 0.95rem; color: #e2e8f0; margin-bottom: 1.2rem; word-break: break-all; }
         .download-btn { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 14px 0; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; text-decoration: none; border-radius: 12px; font-weight: 700; text-align: center; transition: opacity 0.2s; }
         .download-btn:hover { opacity: 0.9; }
 
-        /* Ads Container Layout */
         .ad-container { width: 100%; max-width: 700px; background: rgba(255,255,255,0.015); border: 1px dashed var(--border-color); border-radius: 12px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 0.85rem; margin: 25px 0; }
 
-        /* Content & SEO Article Section */
         .info-section { background: var(--card-bg); backdrop-filter: blur(10px); padding: 2rem; border-radius: 20px; margin-top: 20px; border: 1px solid var(--border-color); }
         .info-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: #f1f5f9; }
         .info-section p, .info-section li { font-size: 0.92rem; color: var(--text-sub); line-height: 1.7; }
         .info-section ol { margin-left: 20px; margin-top: 10px; }
         .info-section ol li { margin-bottom: 8px; }
 
-        /* Features Grid */
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
         .feature-item { background: rgba(15, 23, 42, 0.5); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; }
         .feature-item h3 { font-size: 1rem; color: #fff; margin-bottom: 6px; }
         .feature-item p { font-size: 0.82rem; }
 
-        /* Footer & Compliance Links */
         footer { text-align: center; margin-top: 40px; font-size: 0.85rem; color: var(--text-sub); width: 100%; max-width: 700px; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 10px; flex-wrap: wrap; }
         .footer-links a { color: var(--text-sub); text-decoration: none; transition: color 0.2s; }
@@ -76,10 +78,8 @@
 </head>
 <body>
 
-    <!-- Nav Bar -->
     <nav>
-        <a href="#" class="logo">
-            <!-- TikTok SVG Icon -->
+        <a href="/" class="logo">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.53 0C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.24-2.68.81-5.32 2.82-7.05 1.57-1.36 3.64-2.07 5.72-1.93v4.29c-.92-.12-1.85.12-2.6.66-.97.68-1.5 1.83-1.38 3.01.1 1.25.92 2.32 2.11 2.67 1.26.38 2.61-.06 3.42-1.07.45-.55.7-1.25.68-1.96V0h3.03z" fill="#FE2C55"/>
                 <path d="M12.53 0v16.1c.02.71-.23 1.41-.68 1.96-.81 1.01-2.16 1.45-3.42 1.07-1.19-.35-2.01-1.42-2.11-2.67-.12-1.18.41-2.33 1.38-3.01.75-.54 1.68-.78 2.6-.66V8.5C8.22 8.36 6.15 9.07 4.58 10.43 2.57 12.16 1.52 14.8 1.76 17.48c.21 2.34 1.63 4.52 3.65 5.71 1.22.72 2.65 1.11 4.08 1.03 2.33-.04 4.6-1.29 5.91-3.21.81-1.15 1.27-2.54 1.35-3.94.03-2.91.01-5.83.02-8.75.52.34 1.05.67 1.62.93 1.31.62 2.76.92 4.2.97V6c-1.54-.17-3.12-.68-4.24-1.79C17.07 3.09 16.52 1.53 16.44 0h-3.91z" fill="#25F4EE" style="mix-blend-mode: screen;"/>
@@ -89,8 +89,23 @@
         <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
             <option value="en">English</option>
             <option value="ko">한국어</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="de">Deutsch</option>
             <option value="es">Español</option>
+            <option value="fr">Français</option>
             <option value="ja">日本語</option>
+            <option value="pt">Português (Brasil)</option>
+            <option value="ru">Русский</option>
+            <option value="tr">Türkçe</option>
+            <option value="vi">Tiếng Việt</option>
+            <option value="ar">العربية</option>
+            <option value="th">ไทย</option>
+            <option value="it">Italiano</option>
+            <option value="pl">Polskie</option>
+            <option value="ms">Bahasa Melayu</option>
+            <option value="uk">Ukrainian</option>
+            <option value="nl">Nederlands</option>
+            <option value="ro">Romanian</option>
         </select>
     </nav>
 
@@ -100,7 +115,6 @@
     </header>
 
     <main>
-        <!-- Downloader Component -->
         <div class="downloader-card">
             <div class="input-group">
                 <input type="text" id="tiktok-url" placeholder="Paste TikTok video link here...">
@@ -111,18 +125,14 @@
 
             <div class="result-box" id="result-box">
                 <div class="video-title" id="video-title"></div>
-                <a href="#" id="dl-link" class="download-btn">
-                    <span>Download MP4 Video</span>
-                </a>
+                <a href="#" id="dl-link" class="download-btn">Download MP4 Video</a>
             </div>
         </div>
 
-        <!-- AdSense Container Space -->
         <div class="ad-container">
-            <span>- Advertisement -</span>
+            <span>- Advertisement Space -</span>
         </div>
 
-        <!-- Features Showcase -->
         <div class="features-grid">
             <div class="feature-item">
                 <h3>🚀 Fast & Free</h3>
@@ -138,7 +148,6 @@
             </div>
         </div>
 
-        <!-- SEO Content Section for AdSense Approval -->
         <article class="info-section">
             <h2 id="txt-guide-title">How to Download TikTok Videos Without Watermark</h2>
             <ol id="txt-guide-steps">
@@ -150,7 +159,6 @@
         </article>
     </main>
 
-    <!-- Footer with AdSense Compliance Links -->
     <footer>
         <div class="footer-links">
             <a href="#" onclick="alert('Privacy Policy: We do not store or track any user video URLs or personal data.')">Privacy Policy</a>
@@ -160,38 +168,27 @@
         <p>&copy; 2026 TokDownloader. All rights reserved.</p>
     </footer>
 
-    <!-- Native JavaScript Translations & TikTok Parsing Logic -->
     <script>
-        // Multi-language Translations Dictionary
         const i18n = {
-            en: {
-                title: "TikTok Video Downloader",
-                subtitle: "Download TikTok videos without watermark in HD quality for free",
-                placeholder: "Paste TikTok video link here...",
-                btn: "Analyze",
-                guideTitle: "How to Download TikTok Videos Without Watermark",
-            },
-            ko: {
-                title: "틱톡 동영상 다운로더",
-                subtitle: "워터마크 없는 깨끗한 HD 틱톡 영상을 무료로 다운로드하세요",
-                placeholder: "틱톡 비디오 링크를 여기에 붙여넣으세요...",
-                btn: "분석하기",
-                guideTitle: "워터마크 없이 틱톡 영상 다운로드하는 방법",
-            },
-            es: {
-                title: "Descargador de Videos de TikTok",
-                subtitle: "Descarga videos de TikTok sin marca de agua en calidad HD gratis",
-                placeholder: "Pega el enlace del video de TikTok aquí...",
-                btn: "Analizar",
-                guideTitle: "Cómo descargar videos de TikTok sin marca de agua",
-            },
-            ja: {
-                title: "TikTok Video Downloader",
-                subtitle: "ウォーターマークなしのHD TikTok動画を free でダウンロード",
-                placeholder: "TikTok動画의 링크를 여기에 붙여넣기...",
-                btn: "解析する",
-                guideTitle: "ウォーターマークなしでTikTok動画をダウンロードする方法",
-            }
+            en: { title: "TikTok Video Downloader", subtitle: "Download TikTok videos without watermark in HD quality for free", placeholder: "Paste TikTok video link here...", btn: "Analyze", guideTitle: "How to Download TikTok Videos Without Watermark" },
+            ko: { title: "틱톡 동영상 다운로더", subtitle: "워터마크 없는 깨끗한 HD 틱톡 영상을 무료로 다운로드하세요", placeholder: "틱톡 비디오 링크를 여기에 붙여넣으세요...", btn: "분석하기", guideTitle: "워터마크 없이 틱톡 영상 다운로드하는 방법" },
+            id: { title: "Pengunduh Video TikTok", subtitle: "Unduh video TikTok tanpa watermark kualitas HD gratis", placeholder: "Tempel tautan video TikTok di sini...", btn: "Analisis", guideTitle: "Cara Mengunduh Video TikTok Tanpa Watermark" },
+            de: { title: "TikTok Video Downloader", subtitle: "TikTok-Videos ohne Wasserzeichen kostenlos in HD herunterladen", placeholder: "TikTok-Videolink hier einfügen...", btn: "Analysieren", guideTitle: "So laden Sie TikTok-Videos ohne Wasserzeichen herunter" },
+            es: { title: "Descargador de Videos de TikTok", subtitle: "Descarga videos de TikTok sin marca de agua en calidad HD gratis", placeholder: "Pega el enlace del video de TikTok aquí...", btn: "Analizar", guideTitle: "Cómo descargar videos de TikTok sin marca de agua" },
+            fr: { title: "Téléchargeur de Vidéos TikTok", subtitle: "Téléchargez des vidéos TikTok sans filigrane en qualité HD gratuitement", placeholder: "Collez le lien de la vidéo TikTok ici...", btn: "Analyser", guideTitle: "Comment télécharger des vidéos TikTok sans filigrane" },
+            ja: { title: "TikTok Video Downloader", subtitle: "ウォーターマークなしのHD TikTok動画を無料でダウンロード", placeholder: "TikTok動画のリンクをここに貼り付け...", btn: "解析する", guideTitle: "ウォーターマークなしでTikTok動画をダウンロードする方法" },
+            pt: { title: "Baixar Videos do TikTok", subtitle: "Baixe vídeos do TikTok sem marca d'água em HD gratuitamente", placeholder: "Cole o link do vídeo do TikTok aqui...", btn: "Analisar", guideTitle: "Como baixar vídeos do TikTok sem marca d'água" },
+            ru: { title: "Загрузчик Видео TikTok", subtitle: "Скачивайте видео TikTok без водяных знаков в HD бесплатно", placeholder: "Вставьте ссылку на видео TikTok...", btn: "Анализировать", guideTitle: "Как скачать видео TikTok без водяного знака" },
+            tr: { title: "TikTok Video İndirici", subtitle: "Filigramsız HD TikTok videolarını ücretsiz indirin", placeholder: "TikTok video bağlantısını buraya yapıştırın...", btn: "Analiz Et", guideTitle: "Filigram Olmadan TikTok Videoları Nasıl İndirilir" },
+            vi: { title: "Tải Video TikTok", subtitle: "Tải video TikTok không logo chất lượng HD miễn phí", placeholder: "Dán liên kết video TikTok vào đây...", btn: "Phân tích", guideTitle: "Cách tải video TikTok không có logo" },
+            ar: { title: "منزّل فيديوهات تيك توك", subtitle: "تحميل فيديوهات تيك توك بدون علامة مائية مجاناً بجودة عالية", placeholder: "الصق رابط فيديو تيك توك هنا...", btn: "تحليل", guideTitle: "كيفية تحميل فيديوهات تيك توك بدون علامة مائية" },
+            th: { title: "ดาวน์โหลดวิดีโอ TikTok", subtitle: "ดาวน์โหลดวิดีโอ TikTok ไม่มีลายน้ำ ฟรี คุณภาพ HD", placeholder: "วางลิงก์วิดีโอ TikTok ที่นี่...", btn: "วิเคราะห์", guideTitle: "วิธีดาวน์โหลดวิดีโอ TikTok ไม่มีลายน้ำ" },
+            it: { title: "Download Video TikTok", subtitle: "Scarica video TikTok senza filigrana in qualità HD gratis", placeholder: "Incolla qui il link del video TikTok...", btn: "Analizza", guideTitle: "Come scaricare video TikTok senza filigrana" },
+            pl: { title: "Pobieranie Wideo z TikTok", subtitle: "Pobieraj filmy z TikTok bez znaku wodnego w jakości HD za darmo", placeholder: "Wklej link do filmu z TikTok tutaj...", btn: "Analizuj", guideTitle: "Jak pobrać filmy z TikTok bez znaku wodnego" },
+            ms: { title: "Muat Turun Video TikTok", subtitle: "Muat turun video TikTok tanpa tanda air dalam kualiti HD percuma", placeholder: "Tampal pautan video TikTok di sini...", btn: "Analisis", guideTitle: "Cara Muat Turun Video TikTok Tanpa Tanda Air" },
+            uk: { title: "Завантажувач Відео TikTok", subtitle: "Завантажуйте відео TikTok без водяного знака в HD безкоштовно", placeholder: "Вставте посилання на відео TikTok...", btn: "Аналізувати", guideTitle: "Як завантажити відео TikTok без водяного знака" },
+            nl: { title: "TikTok Video Downloader", subtitle: "Download TikTok-video's zonder watermerk gratis in HD-kwaliteit", placeholder: "Plak TikTok-videolink hier...", btn: "Analyseren", guideTitle: "Hoe TikTok-video's zonder watermerk te downloaden" },
+            ro: { title: "Descărcare Video TikTok", subtitle: "Descărcați videoclipuri TikTok fără filigran în calitate HD gratuit", placeholder: "Lipiți linkul videoclipului TikTok aici...", btn: "Analizează", guideTitle: "Cum să descărcați videoclipuri TikTok fără filigran" }
         };
 
         function changeLanguage(lang) {
@@ -201,9 +198,24 @@
             document.getElementById('tiktok-url').placeholder = data.placeholder;
             document.getElementById('txt-btn').innerText = data.btn;
             document.getElementById('txt-guide-title').innerText = data.guideTitle;
+            
+            // URL 파라미터 업데이트 (SEO 연동용)
+            if (history.pushState) {
+                const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?lang=' + lang;
+                window.history.pushState({path:newurl},'',newurl);
+            }
         }
 
-        // Original TikTok Download Logic (Unchanged)
+        // 페이지 접속 시 URL 언어 체크 자동 적용
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lang = urlParams.get('lang');
+            if (lang && i18n[lang]) {
+                document.getElementById('langSelect').value = lang;
+                changeLanguage(lang);
+            }
+        };
+
         async function downloadVideo() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const resultBox = document.getElementById('result-box');
