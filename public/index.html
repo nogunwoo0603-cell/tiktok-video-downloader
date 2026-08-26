@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VeloTok Downloader - Free TikTok Video & MP3 Downloader Without Watermark</title>
-    <meta name="description" content="Download TikTok videos and MP3 audio without watermark for free in HD quality. Read our ultimate guides, tutorials, and legal privacy policies.">
-    <meta name="keywords" content="tiktok downloader, download tiktok video, tiktok mp3, no watermark, tiktok saver, mp4 downloader">
+    <!-- [적용완료] 1번 롱테일 키워드 메타 태그 대폭 보강 -->
+    <meta name="description" content="Download TikTok videos and MP3 audio without watermark for free in HD quality. 아이폰에서 틱톡 워터마크 지우기, 틱톡 음원만 추출해서 벨소리 만들기, 틱톡 비공개 영상 다운로드 방법을 지원합니다.">
+    <meta name="keywords" content="tiktok downloader, download tiktok video, tiktok mp3, no watermark, tiktok saver, mp4 downloader, 아이폰에서 틱톡 워터마크 지우기, 틱톡 음원만 추출해서 벨소리 만들기, 틱톡 댄스 챌린지 원본 화질 그대로 저장, 카톡으로 틱톡 영상 보낼 때 화질 안 깨지게 저장하는 법, 틱톡 비공개 영상 다운로드 방법">
 
     <link rel="alternate" hreflang="x-default" href="https://tiktok-video-downloader-3pt0.onrender.com/" />
     <link rel="alternate" hreflang="en" href="https://tiktok-video-downloader-3pt0.onrender.com/?lang=en" />
@@ -193,20 +194,19 @@
             <span>- Advertisement Space -</span>
         </div>
 
+        <!-- [적용완료] 1번 롱테일 키워드를 하단 블로그 본문 소제목(h3)에 직접 녹여내어 구글 검색 유입을 극대화 -->
         <article class="content-article" id="blog-section">
             <h2>Comprehensive Guide: Everything You Need to Know About TikTok Content Preservation</h2>
             <p>TikTok has rapidly evolved into the dominant global ecosystem for creative micro-video content, education, and entertainment. Millions of users upload clips daily, ranging from viral dance trends to informative tutorials. However, saving these memories or offline materials locally often presents obstacles like platform watermarks or restricted direct download permissions. <strong>VeloTok Downloader</strong> offers an optimized, streamlined web utility designed to solve these exact friction points while preserving original HD video clarity.</p>
 
-            <h3>Why Do You Need a Watermark-Free TikTok Downloader?</h3>
-            <p>When you download standard videos straight from mobile applications, platforms usually stamp dynamic creator usernames or watermarks across the frames. While this serves branding purposes for the network, it obstructs visual details when compiling content collections, editing mashups, or sharing clips across alternative cross-platform media channels. Removing these overlays provides cleaner presentations.</p>
+            <h3>아이폰에서 틱톡 워터마크 지우기 및 원본 저장 방법</h3>
+            <p>많은 사용자들이 사파리나 카카오톡 인앱 브라우저를 통해 아이폰에서 틱톡 영상을 저장할 때 로고와 워터마크가 지워지지 않아 불편을 겪습니다. 본 사이트를 이용하면 아이폰에서도 별도의 앱 설치 없이 깔끔하게 워터마크를 제거하고 저장할 수 있습니다.</p>
 
-            <h3>Key Features of VeloTok Downloader</h3>
-            <ul>
-                <li><strong>No Watermark Overlay:</strong> Clean, pristine video outputs matching the original creator upload specifications.</li>
-                <li><strong>High-Definition (HD) Resolution:</strong> Retains high-fidelity rendering for clear playback on large desktop monitors, tablets, and smartphones.</li>
-                <li><strong>Audio Extraction (MP3):</strong> Quick conversion capabilities allowing users to isolate background tracks, trending sounds, or voiceovers into standard audio files.</li>
-                <li><strong>Cross-Platform Compatibility:</strong> Operates seamlessly via mobile and desktop browsers (Chrome, Safari, Firefox, Edge) without requiring native software installations.</li>
-            </ul>
+            <h3>틱톡 음원만 추출해서 벨소리 만들기 가이드</h3>
+            <p>동영상 전체가 아니라 배경에 깔린 매력적인 음악이나 트렌딩 사운드만 필요할 때가 있습니다. 다운로드 창에서 제공하는 MP3 음원 추출 기능을 활용하면 스마트폰 벨소리나 쇼츠 배경음악용으로 소스 파일을 손쉽게 분리해 낼 수 있습니다.</p>
+
+            <h3>카톡으로 틱톡 영상 보낼 때 화질 안 깨지게 저장하는 법</h3>
+            <p>카카오톡으로 영상을 공유하면 압축 과정 때문에 화질이 심하게 깨지는 현상이 발생합니다. 틱톡 댄스 챌린지나 고화질 튜토리얼 영상을 원본 화질 그대로 소장한 뒤 전송해야 화질 저하를 방지할 수 있습니다.</p>
 
             <h3>Step-by-Step Instructions: How to Save Videos</h3>
             <ol>
@@ -321,7 +321,6 @@
                 window.URL.revokeObjectURL(blobUrl);
                 document.body.removeChild(a);
             } catch (err) {
-                // CORS 등으로 실패 시 새 창 대신 직접 링크 열기 시도
                 window.open(fileUrl, '_blank');
             } finally {
                 btn.innerText = originalText;
@@ -382,6 +381,17 @@
                 alert(err.message || 'Unable to process the link. Please check the URL.');
             }
         }
+
+        // [적용완료] 2번 글로벌 자동 언어 맵핑 스크립트 (사이트 진입 시 브라우저 언어 감지 및 자동 변환)
+        window.addEventListener('DOMContentLoaded', () => {
+            const userLang = (navigator.language || navigator.userLanguage).toLowerCase();
+            const shortLang = userLang.split('-')[0];
+            
+            if (i18n[shortLang]) {
+                document.getElementById('langSelect').value = shortLang;
+                changeLanguage(shortLang);
+            }
+        });
     </script>
 </body>
 </html>
