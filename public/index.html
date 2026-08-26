@@ -53,24 +53,21 @@
         
         #loading { display: none; text-align: center; color: #2563eb; margin-top: 20px; font-weight: 600; }
         
-        /* 스크린샷 레이아웃 반영 (썸네일 + 하단 걸쳐지는 버튼 스타일) */
+        /* SaveInsta 스타일 결과 박스 (썸네일 + 하단 밀착형 메인 버튼) */
         .result-box { display: none; flex-direction: column; align-items: center; margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border-radius: 16px; border: 1px solid var(--border-color); }
         
         .thumbnail-wrapper { position: relative; width: 100%; max-width: 400px; border-radius: 14px; overflow: hidden; background: #000; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 1rem; }
         .thumbnail-container { width: 100%; max-height: 450px; display: flex; justify-content: center; }
         .thumbnail-container img { width: 100%; height: auto; object-fit: contain; display: block; }
         
-        /* 영상 이미지 바로 하단에 겹쳐서 들어가는 메인 다운로드 버튼 (스크린샷 스타일) */
         .download-btn-main { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 15px 0; background: #2563eb; color: white; text-decoration: none; font-weight: 700; font-size: 1.05rem; text-align: center; transition: background 0.2s; }
         .download-btn-main:hover { background: #1d4ed8; }
 
-        .video-title { font-size: 0.95rem; color: #111827; margin: 1rem 0; font-weight: 600; word-break: break-all; text-align: center; }
-        
-        /* 보라색 앱 다운로드 스타일 버튼 */
+        /* 보라색 앱 다운로드 버튼 */
         .download-btn-sub { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 14px 0; background: #9333ea; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(147, 51, 234, 0.2); }
         .download-btn-sub:hover { background: #7e22ce; }
 
-        /* 음악 다운로드 버튼 */
+        /* MP3 음악 다운로드 버튼 */
         .download-btn-music { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 12px 0; background: #059669; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; margin-bottom: 10px; }
         .download-btn-music:hover { background: #047857; }
 
@@ -78,12 +75,12 @@
         .download-btn-other { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 13px 0; background: #6b7280; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; border: none; cursor: pointer; }
         .download-btn-other:hover { background: #4b5563; }
 
-        /* 광고 영역 스타일 */
         .ad-container { width: 100%; max-width: 900px; background: #ffffff; border: 1px dashed var(--border-color); border-radius: 12px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 0.85rem; margin: 25px 0; }
 
-        /* 콘텐츠 영역 */
+        /* 애드센스 통과를 위한 풍부한 콘텐츠 영역 스타일 */
         .content-article { background: var(--card-bg); padding: 2.5rem; border-radius: 24px; margin-top: 30px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
         .content-article h2 { font-size: 1.4rem; margin-bottom: 15px; color: #111827; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px; }
+        .content-article h3 { font-size: 1.15rem; margin: 20px 0 10px; color: #1f2937; }
         .content-article p, .content-article li { font-size: 0.95rem; color: #4b5563; line-height: 1.8; margin-bottom: 12px; }
         .content-article ul, .content-article ol { margin-left: 20px; margin-bottom: 15px; }
 
@@ -155,7 +152,7 @@
 
                 <div id="loading">Analyzing video stream securely...</div>
 
-                <!-- 스크린샷과 동일한 썸네일 + 하단 버튼 밀착 구조 결과 박스 -->
+                <!-- 영상 썸네일과 버튼만 깔끔하게 노출되는 결과 박스 -->
                 <div class="result-box" id="result-box">
                     <div class="thumbnail-wrapper">
                         <div class="thumbnail-container">
@@ -163,8 +160,6 @@
                         </div>
                         <a href="#" id="dl-link" class="download-btn-main">📥 Download Video</a>
                     </div>
-                    
-                    <div class="video-title" id="video-title"></div>
                     
                     <a href="#" class="download-btn-sub">✨ Download with VeloTok app</a>
                     <a href="#" id="dl-music-link" class="download-btn-music" style="display: none;">🎵 Download MP3 Audio</a>
@@ -177,7 +172,9 @@
         <div id="view-privacy" class="page-view policy-container">
             <h2>Privacy Policy</h2>
             <p><strong>Last updated: January 2026</strong></p>
-            <p>At VeloTok Downloader, safeguarding the privacy of our visitors is one of our top priorities.</p>
+            <p>At VeloTok Downloader, safeguarding the privacy of our visitors is one of our top priorities. This Privacy Policy document contains types of information that is collected and recorded by VeloTok Downloader and how we use it.</p>
+            <h3>Information We Do Not Collect</h3>
+            <p>We do not store downloaded videos or keep tracks of user download histories. All processing is done securely through third-party APIs without retaining personal files on our servers.</p>
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
@@ -185,7 +182,9 @@
         <div id="view-terms" class="page-view policy-container">
             <h2>Terms of Service</h2>
             <p><strong>Last updated: January 2026</strong></p>
-            <p>By accessing and using VeloTok Downloader, you accept and agree to be bound by the terms.</p>
+            <p>By accessing and using VeloTok Downloader, you accept and agree to be bound by the terms and provision of this agreement.</p>
+            <h3>Use Limitations</h3>
+            <p>Users are strictly prohibited from using downloaded content for commercial purposes without explicit permission from the original copyright owners.</p>
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
@@ -193,7 +192,7 @@
         <div id="view-dmca" class="page-view policy-container">
             <h2>DMCA Copyright Policy</h2>
             <p><strong>Last updated: January 2026</strong></p>
-            <p>Report alleged copyright infringements to our designated email: <strong>velotok67@gmail.com</strong></p>
+            <p>VeloTok Downloader respects intellectual property rights and complies with the Digital Millennium Copyright Act (DMCA). Report alleged copyright infringements to our designated email: <strong>velotok67@gmail.com</strong></p>
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
@@ -201,7 +200,7 @@
         <div id="view-contact" class="page-view policy-container">
             <h2>Contact Us</h2>
             <p><strong>Last updated: January 2026</strong></p>
-            <p>Support & Inquiries: <strong>velotok67@gmail.com</strong></p>
+            <p>If you have any questions about our Privacy Policy, Terms, or technical issues, please feel free to reach out to us via email: <strong>velotok67@gmail.com</strong></p>
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
@@ -210,10 +209,40 @@
             <span>- Advertisement Space -</span>
         </div>
 
-        <!-- SEO 블로그 콘텐츠 영역 -->
+        <!-- 애드센스 승인 통과용 풍부한 SEO 콘텐츠 가이드 -->
         <article class="content-article" id="blog-section">
             <h2>Comprehensive Guide: Everything You Need to Know About TikTok Content Preservation</h2>
-            <p>TikTok has rapidly evolved into the dominant global ecosystem for creative micro-video content...</p>
+            <p>TikTok has rapidly evolved into the dominant global ecosystem for creative micro-video content, education, and entertainment. Millions of users upload clips daily, ranging from viral dance trends to informative tutorials. However, saving these memories or offline materials locally often presents obstacles like platform watermarks or restricted direct download permissions. <strong>VeloTok Downloader</strong> offers an optimized, streamlined web utility designed to solve these exact friction points while preserving original HD video clarity.</p>
+
+            <h3>Why Do You Need a Watermark-Free TikTok Downloader?</h3>
+            <p>When you download standard videos straight from mobile applications, platforms usually stamp dynamic creator usernames or watermarks across the frames. While this serves branding purposes for the network, it obstructs visual details when compiling content collections, editing mashups, or sharing clips across alternative cross-platform media channels. Removing these overlays provides cleaner presentations.</p>
+
+            <h3>Key Features of VeloTok Downloader</h3>
+            <ul>
+                <li><strong>No Watermark Overlay:</strong> Clean, pristine video outputs matching the original creator upload specifications.</li>
+                <li><strong>High-Definition (HD) Resolution:</strong> Retains high-fidelity rendering for clear playback on large desktop monitors, tablets, and smartphones.</li>
+                <li><strong>Audio Extraction (MP3):</strong> Quick conversion capabilities allowing users to isolate background tracks, trending sounds, or voiceovers into standard audio files.</li>
+                <li><strong>Cross-Platform Compatibility:</strong> Operates seamlessly via mobile and desktop browsers (Chrome, Safari, Firefox, Edge) without requiring native software installations.</li>
+            </ul>
+
+            <h3>Step-by-Step Instructions: How to Save Videos</h3>
+            <ol>
+                <li>Open the TikTok application or website and locate the specific video you wish to save.</li>
+                <li>Tap the <strong>Share</strong> button and select <strong>Copy Link</strong> to copy the video URL to your clipboard.</li>
+                <li>Return to VeloTok Downloader, paste the copied link into the input field at the top of the page.</li>
+                <li>Click the <strong>Analyze</strong> button to fetch the secure media streams.</li>
+                <li>Select either <strong>Download Video</strong> or <strong>Download MP3 Audio</strong> to save the file directly to your device storage.</li>
+            </ol>
+
+            <h3>Frequently Asked Questions (FAQ)</h3>
+            <h3>Is VeloTok Downloader completely free to use?</h3>
+            <p>Yes, our tool is 100% free with no hidden subscription fees, login requirements, or strict download quotas.</p>
+
+            <h3>Where are the downloaded files saved on my device?</h3>
+            <p>Files are typically routed automatically to your device's default "Downloads" folder, depending on your browser and operating system settings.</p>
+
+            <h3>Does this tool comply with copyright regulations?</h3>
+            <p>VeloTok Downloader is intended strictly for personal archiving and offline viewing. We do not host copyrighted files on our servers. Users are solely responsible for respecting creators' intellectual property rights under applicable local and international laws.</p>
         </article>
     </main>
 
@@ -314,9 +343,7 @@
                     }
 
                     loading.style.display = 'none';
-                    document.getElementById('video-title').innerText = result.data.title || 'TikTok Video File';
                     
-                    // 썸네일 이미지 세팅
                     if (result.data.cover) {
                         thumbnailImg.src = result.data.cover;
                     }
