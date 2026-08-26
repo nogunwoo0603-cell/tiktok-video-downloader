@@ -59,10 +59,10 @@
         .thumbnail-container { width: 100%; max-height: 450px; display: flex; justify-content: center; }
         .thumbnail-container img { width: 100%; height: auto; object-fit: contain; display: block; }
         
-        .download-btn-main { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 15px 0; background: #2563eb; color: white; text-decoration: none; font-weight: 700; font-size: 1.05rem; text-align: center; transition: background 0.2s; }
+        .download-btn-main { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 15px 0; background: #2563eb; color: white; text-decoration: none; font-weight: 700; font-size: 1.05rem; text-align: center; transition: background 0.2s; cursor: pointer; }
         .download-btn-main:hover { background: #1d4ed8; }
 
-        .download-btn-music { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 12px 0; background: #059669; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; margin-bottom: 10px; }
+        .download-btn-music { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 12px 0; background: #059669; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; margin-bottom: 10px; cursor: pointer; }
         .download-btn-music:hover { background: #047857; }
 
         .download-btn-other { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 13px 0; background: #6b7280; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; border: none; cursor: pointer; }
@@ -148,10 +148,10 @@
                         <div class="thumbnail-container">
                             <img id="video-thumbnail" src="" alt="Video Thumbnail">
                         </div>
-                        <a href="#" id="dl-link" class="download-btn-main">📥 Download Video</a>
+                        <a href="#" id="dl-link" class="download-btn-main" onclick="triggerDownload(event, 'video')">📥 Download Video</a>
                     </div>
                     
-                    <a href="#" id="dl-music-link" class="download-btn-music" style="display: none;">🎵 Download MP3 Audio</a>
+                    <a href="#" id="dl-music-link" class="download-btn-music" style="display: none;" onclick="triggerDownload(event, 'audio')">🎵 Download MP3 Audio</a>
                     <button class="download-btn-other" onclick="resetDownloader()">🔄 Download other video</button>
                 </div>
             </div>
@@ -299,6 +299,35 @@
             document.getElementById('tiktok-url').focus();
         }
 
+        async function triggerDownload(event, type) {
+            event.preventDefault();
+            const btn = event.currentTarget;
+            const fileUrl = btn.href;
+            if (!fileUrl || fileUrl === '#') return;
+
+            const originalText = btn.innerText;
+            btn.innerText = "Downloading...";
+
+            try {
+                const response = await fetch(fileUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                // CORS 등으로 실패 시 새 창 대신 직접 링크 열기 시도
+                window.open(fileUrl, '_blank');
+            } finally {
+                btn.innerText = originalText;
+            }
+        }
+
         async function downloadVideo() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const resultBox = document.getElementById('result-box');
@@ -332,7 +361,6 @@
                     }
 
                     dlBtn.href = videoUrl;
-                    dlBtn.setAttribute('download', 'video.mp4');
 
                     if (result.data.music) {
                         let musicUrl = result.data.music;
