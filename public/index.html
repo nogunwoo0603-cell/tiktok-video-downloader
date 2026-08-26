@@ -53,7 +53,6 @@
         
         #loading { display: none; text-align: center; color: #2563eb; margin-top: 20px; font-weight: 600; }
         
-        /* SaveInsta 스타일 결과 박스 (썸네일 + 하단 밀착형 메인 버튼) */
         .result-box { display: none; flex-direction: column; align-items: center; margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border-radius: 16px; border: 1px solid var(--border-color); }
         
         .thumbnail-wrapper { position: relative; width: 100%; max-width: 400px; border-radius: 14px; overflow: hidden; background: #000; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 1rem; }
@@ -63,21 +62,14 @@
         .download-btn-main { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 15px 0; background: #2563eb; color: white; text-decoration: none; font-weight: 700; font-size: 1.05rem; text-align: center; transition: background 0.2s; }
         .download-btn-main:hover { background: #1d4ed8; }
 
-        /* 보라색 앱 다운로드 버튼 */
-        .download-btn-sub { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 14px 0; background: #9333ea; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(147, 51, 234, 0.2); }
-        .download-btn-sub:hover { background: #7e22ce; }
-
-        /* MP3 음악 다운로드 버튼 */
         .download-btn-music { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 12px 0; background: #059669; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; margin-bottom: 10px; }
         .download-btn-music:hover { background: #047857; }
 
-        /* 다른 영상 다운로드 버튼 */
         .download-btn-other { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 13px 0; background: #6b7280; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; border: none; cursor: pointer; }
         .download-btn-other:hover { background: #4b5563; }
 
         .ad-container { width: 100%; max-width: 900px; background: #ffffff; border: 1px dashed var(--border-color); border-radius: 12px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 0.85rem; margin: 25px 0; }
 
-        /* 애드센스 통과를 위한 풍부한 콘텐츠 영역 스타일 */
         .content-article { background: var(--card-bg); padding: 2.5rem; border-radius: 24px; margin-top: 30px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
         .content-article h2 { font-size: 1.4rem; margin-bottom: 15px; color: #111827; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px; }
         .content-article h3 { font-size: 1.15rem; margin: 20px 0 10px; color: #1f2937; }
@@ -142,7 +134,6 @@
     </header>
 
     <main>
-        <!-- 홈 뷰 -->
         <div id="view-home" class="page-view active">
             <div class="downloader-card" style="border:none; box-shadow:none; padding:0;">
                 <div class="input-group">
@@ -152,7 +143,6 @@
 
                 <div id="loading">Analyzing video stream securely...</div>
 
-                <!-- 영상 썸네일과 버튼만 깔끔하게 노출되는 결과 박스 -->
                 <div class="result-box" id="result-box">
                     <div class="thumbnail-wrapper">
                         <div class="thumbnail-container">
@@ -161,14 +151,12 @@
                         <a href="#" id="dl-link" class="download-btn-main">📥 Download Video</a>
                     </div>
                     
-                    <a href="#" class="download-btn-sub">✨ Download with VeloTok app</a>
                     <a href="#" id="dl-music-link" class="download-btn-music" style="display: none;">🎵 Download MP3 Audio</a>
                     <button class="download-btn-other" onclick="resetDownloader()">🔄 Download other video</button>
                 </div>
             </div>
         </div>
 
-        <!-- 개인정보처리방침 -->
         <div id="view-privacy" class="page-view policy-container">
             <h2>Privacy Policy</h2>
             <p><strong>Last updated: January 2026</strong></p>
@@ -178,7 +166,6 @@
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- 이용약관 -->
         <div id="view-terms" class="page-view policy-container">
             <h2>Terms of Service</h2>
             <p><strong>Last updated: January 2026</strong></p>
@@ -188,7 +175,6 @@
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- DMCA -->
         <div id="view-dmca" class="page-view policy-container">
             <h2>DMCA Copyright Policy</h2>
             <p><strong>Last updated: January 2026</strong></p>
@@ -196,7 +182,6 @@
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- 문의하기 -->
         <div id="view-contact" class="page-view policy-container">
             <h2>Contact Us</h2>
             <p><strong>Last updated: January 2026</strong></p>
@@ -204,12 +189,10 @@
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- 광고 영역 -->
         <div class="ad-container">
             <span>- Advertisement Space -</span>
         </div>
 
-        <!-- 애드센스 승인 통과용 풍부한 SEO 콘텐츠 가이드 -->
         <article class="content-article" id="blog-section">
             <h2>Comprehensive Guide: Everything You Need to Know About TikTok Content Preservation</h2>
             <p>TikTok has rapidly evolved into the dominant global ecosystem for creative micro-video content, education, and entertainment. Millions of users upload clips daily, ranging from viral dance trends to informative tutorials. However, saving these memories or offline materials locally often presents obstacles like platform watermarks or restricted direct download permissions. <strong>VeloTok Downloader</strong> offers an optimized, streamlined web utility designed to solve these exact friction points while preserving original HD video clarity.</p>
@@ -275,7 +258,7 @@
             it: { title: "Download Video TikTok", subtitle: "Scarica video TikTok senza filigrana in qualità HD gratis", placeholder: "Incolla qui il link del video TikTok...", btn: "Analizza" },
             pl: { title: "Pobieranie Wideo z TikTok", subtitle: "Pobieraj filmy z TikTok bez znaku wodnego w jakości HD za darmo", placeholder: "Wklej link do filmu z TikTok tutaj...", btn: "Analizuj" },
             ms: { title: "Muat Turun Video TikTok", subtitle: "Muat turun video TikTok tanpa tanda air dalam kualiti HD percuma", placeholder: "Tampal pautan video TikTok di sini...", btn: "Analisis" },
-            uk: { title: "Завантажувач Відео TikTok", subtitle: "Завантажуйте відео TikTok без водяного знака в HD безкоштовно", placeholder: "Вставте посилання на відео TikTok...", btn: "Аналізувати" },
+            uk: { title: "Завантажувач Відео TikTok", subtitle: "Завантажуйте відео TikTok без водяного знака в HD безкоштовно", placeholder: "Вставте посилання на видео TikTok...", btn: "Аналізувати" },
             nl: { title: "TikTok Video Downloader", subtitle: "Download TikTok-video's zonder watermerk gratis in HD-kwaliteit", placeholder: "Plak TikTok-videolink hier...", btn: "Analyseren" },
             ro: { title: "Descărcare Video TikTok", subtitle: "Descărcați videoclipuri TikTok fără filigran în calitate HD gratuit", placeholder: "Lipiți linkul videoclipului TikTok aici...", btn: "Analizează" }
         };
