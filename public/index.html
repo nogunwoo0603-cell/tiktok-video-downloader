@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TokDownloader - Free TikTok Video & MP3 Downloader Without Watermark</title>
+    <title>VeloTok Downloader - Free TikTok Video & MP3 Downloader Without Watermark</title>
     <meta name="description" content="Download TikTok videos and MP3 audio without watermark for free in HD quality. Read our ultimate guides, tutorials, and legal privacy policies.">
     <meta name="keywords" content="tiktok downloader, download tiktok video, tiktok mp3, no watermark, tiktok saver, mp4 downloader">
 
@@ -52,18 +52,38 @@
         button.btn-analyze { padding: 16px 28px; border-radius: 14px; border: none; background: var(--accent-gradient); color: white; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
         
         #loading { display: none; text-align: center; color: #2563eb; margin-top: 20px; font-weight: 600; }
-        .result-box { display: none; flex-direction: column; margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border-radius: 16px; border: 1px solid var(--border-color); }
-        .video-title { font-size: 0.95rem; color: #111827; margin-bottom: 1.2rem; font-weight: 600; word-break: break-all; }
-        .download-btn-main { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 18px 0; background: var(--accent-gradient); color: white; text-decoration: none; border-radius: 14px; font-weight: 800; font-size: 1.1rem; text-align: center; margin-bottom: 12px; }
-        .download-btn-sub { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 12px 0; background: #ffffff; color: #374151; text-decoration: none; border-radius: 12px; font-weight: 600; font-size: 0.92rem; text-align: center; border: 1px solid var(--border-color); }
+        
+        /* 스크린샷 레이아웃 반영 (썸네일 + 하단 걸쳐지는 버튼 스타일) */
+        .result-box { display: none; flex-direction: column; align-items: center; margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border-radius: 16px; border: 1px solid var(--border-color); }
+        
+        .thumbnail-wrapper { position: relative; width: 100%; max-width: 400px; border-radius: 14px; overflow: hidden; background: #000; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 1rem; }
+        .thumbnail-container { width: 100%; max-height: 450px; display: flex; justify-content: center; }
+        .thumbnail-container img { width: 100%; height: auto; object-fit: contain; display: block; }
+        
+        /* 영상 이미지 바로 하단에 겹쳐서 들어가는 메인 다운로드 버튼 (스크린샷 스타일) */
+        .download-btn-main { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 15px 0; background: #2563eb; color: white; text-decoration: none; font-weight: 700; font-size: 1.05rem; text-align: center; transition: background 0.2s; }
+        .download-btn-main:hover { background: #1d4ed8; }
 
-        /* 광고 영역 스타일 복원 */
+        .video-title { font-size: 0.95rem; color: #111827; margin: 1rem 0; font-weight: 600; word-break: break-all; text-align: center; }
+        
+        /* 보라색 앱 다운로드 스타일 버튼 */
+        .download-btn-sub { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 14px 0; background: #9333ea; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(147, 51, 234, 0.2); }
+        .download-btn-sub:hover { background: #7e22ce; }
+
+        /* 음악 다운로드 버튼 */
+        .download-btn-music { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 12px 0; background: #059669; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; margin-bottom: 10px; }
+        .download-btn-music:hover { background: #047857; }
+
+        /* 다른 영상 다운로드 버튼 */
+        .download-btn-other { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 13px 0; background: #6b7280; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; border: none; cursor: pointer; }
+        .download-btn-other:hover { background: #4b5563; }
+
+        /* 광고 영역 스타일 */
         .ad-container { width: 100%; max-width: 900px; background: #ffffff; border: 1px dashed var(--border-color); border-radius: 12px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 0.85rem; margin: 25px 0; }
 
-        /* 풍부한 텍스트 콘텐츠 영역 (SEO 핵심) */
+        /* 콘텐츠 영역 */
         .content-article { background: var(--card-bg); padding: 2.5rem; border-radius: 24px; margin-top: 30px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
         .content-article h2 { font-size: 1.4rem; margin-bottom: 15px; color: #111827; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px; }
-        .content-article h3 { font-size: 1.15rem; margin: 20px 0 10px; color: #1f2937; }
         .content-article p, .content-article li { font-size: 0.95rem; color: #4b5563; line-height: 1.8; margin-bottom: 12px; }
         .content-article ul, .content-article ol { margin-left: 20px; margin-bottom: 15px; }
 
@@ -72,7 +92,6 @@
         .footer-links a { color: var(--text-sub); text-decoration: none; cursor: pointer; font-weight: 500; }
         .footer-links a:hover { color: #111827; text-decoration: underline; }
 
-        /* 독립 페이지 내부 서식 */
         .policy-container h2 { margin-bottom: 20px; font-size: 1.8rem; color: #111827; }
         .policy-container h3 { margin-top: 25px; margin-bottom: 10px; font-size: 1.2rem; color: #1f2937; }
         .policy-container p { margin-bottom: 15px; color: #4b5563; }
@@ -87,7 +106,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.53 0C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.24-2.68.81-5.32 2.82-7.05 1.57-1.36 3.64-2.07 5.72-1.93v4.29c-.92-.12-1.85.12-2.6.66-.97.68-1.5 1.83-1.38 3.01.1 1.25.92 2.32 2.11 2.67 1.26.38 2.61-.06 3.42-1.07.45-.55.7-1.25.68-1.96V0h3.03z" fill="#111827"/>
             </svg>
-            TokDownloader
+            VeloTok Downloader
         </a>
         <div class="nav-links">
             <a href="/" onclick="routePage('home', event)">Home</a>
@@ -97,7 +116,6 @@
             <a href="/dmca" onclick="routePage('dmca', event)">DMCA</a>
             <a href="/contact" onclick="routePage('contact', event)">Contact</a>
         </div>
-        <!-- 19개국 다국어 셀렉터 복원 -->
         <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
             <option value="en">English</option>
             <option value="ko">한국어</option>
@@ -127,101 +145,75 @@
     </header>
 
     <main>
-        <!-- 1. 홈(다운로더) 뷰 -->
+        <!-- 홈 뷰 -->
         <div id="view-home" class="page-view active">
             <div class="downloader-card" style="border:none; box-shadow:none; padding:0;">
                 <div class="input-group">
-                    <input type="text" id="tiktok-url" placeholder="Paste TikTok video link here (e.g., https://www.tiktok.com/...)...">
+                    <input type="text" id="tiktok-url" placeholder="Paste TikTok video link here...">
                     <button class="btn-analyze" id="txt-btn" onclick="downloadVideo()">Analyze</button>
                 </div>
 
                 <div id="loading">Analyzing video stream securely...</div>
 
+                <!-- 스크린샷과 동일한 썸네일 + 하단 버튼 밀착 구조 결과 박스 -->
                 <div class="result-box" id="result-box">
+                    <div class="thumbnail-wrapper">
+                        <div class="thumbnail-container">
+                            <img id="video-thumbnail" src="" alt="Video Thumbnail">
+                        </div>
+                        <a href="#" id="dl-link" class="download-btn-main">📥 Download Video</a>
+                    </div>
+                    
                     <div class="video-title" id="video-title"></div>
-                    <a href="#" id="dl-link" class="download-btn-main">🎬 Download MP4 Video (No Watermark)</a>
-                    <a href="#" id="dl-music-link" class="download-btn-sub" style="display: none;">🎵 Download MP3 Audio Track</a>
+                    
+                    <a href="#" class="download-btn-sub">✨ Download with VeloTok app</a>
+                    <a href="#" id="dl-music-link" class="download-btn-music" style="display: none;">🎵 Download MP3 Audio</a>
+                    <button class="download-btn-other" onclick="resetDownloader()">🔄 Download other video</button>
                 </div>
             </div>
         </div>
 
-        <!-- 2. 독립된 개인정보처리방침 페이지 뷰 -->
+        <!-- 개인정보처리방침 -->
         <div id="view-privacy" class="page-view policy-container">
             <h2>Privacy Policy</h2>
             <p><strong>Last updated: January 2026</strong></p>
-            <p>At TokDownloader, accessible from our website, safeguarding the privacy of our visitors is one of our top priorities. This Privacy Policy document contains types of information that is collected and recorded by TokDownloader and how we use it.</p>
-            <h3>Log Files</h3>
-            <p>TokDownloader follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks.</p>
-            <h3>Google AdSense and Cookies</h3>
-            <p>Google is one of a third-party vendor on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to our website and other sites on the internet. Users may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy.</p>
+            <p>At VeloTok Downloader, safeguarding the privacy of our visitors is one of our top priorities.</p>
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- 3. 독립된 이용약관 페이지 뷰 -->
+        <!-- 이용약관 -->
         <div id="view-terms" class="page-view policy-container">
             <h2>Terms of Service</h2>
             <p><strong>Last updated: January 2026</strong></p>
-            <p>By accessing and using TokDownloader, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by these terms, please do not use this service.</p>
-            <h3>Use License</h3>
-            <p>Permission is granted to temporarily download one copy of the materials on TokDownloader for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license, you may not modify or copy the materials, use the materials for any commercial purpose, or attempt to decompile any software contained on the website.</p>
-            <h3>Disclaimer</h3>
-            <p>The materials on TokDownloader are provided on an 'as is' basis. TokDownloader makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+            <p>By accessing and using VeloTok Downloader, you accept and agree to be bound by the terms.</p>
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- 4. 독립된 DMCA 저작권 페이지 뷰 (이메일 변경 완료) -->
+        <!-- DMCA -->
         <div id="view-dmca" class="page-view policy-container">
             <h2>DMCA Copyright Policy</h2>
             <p><strong>Last updated: January 2026</strong></p>
-            <p>TokDownloader respects the intellectual property rights of others and expects its users to do same. In accordance with the Digital Millennium Copyright Act (DMCA), we will respond expeditiously to claims of copyright infringement committed using the TokDownloader service.</p>
-            <h3>Notice of Copyright Infringement</h3>
-            <p>If you are a copyright owner, or are authorized to act on behalf of one, or authorized to act under any exclusive right under copyright, please report alleged copyright infringements taking place on or through our site by sending a notice containing the following details to our designated email: <strong>velotok67@gmail.com</strong></p>
-            <ul>
-                <li>Identification of the copyrighted work claimed to have been infringed.</li>
-                <li>Identification of the material that is claimed to be infringing.</li>
-                <li>Your contact information (address, telephone number, and email).</li>
-            </ul>
+            <p>Report alleged copyright infringements to our designated email: <strong>velotok67@gmail.com</strong></p>
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- 5. 독립된 문의하기 페이지 뷰 (이메일 변경 완료) -->
+        <!-- 문의하기 -->
         <div id="view-contact" class="page-view policy-container">
             <h2>Contact Us</h2>
             <p><strong>Last updated: January 2026</strong></p>
-            <p>If you have any questions, concerns, or technical issues regarding our TikTok video downloader service, please feel free to get in touch with our administrative team.</p>
-            <h3>Support Channels</h3>
-            <p>General Inquiries & Feedback: <strong>velotok67@gmail.com</strong></p>
-            <p>Copyright & DMCA Concerns: <strong>velotok67@gmail.com</strong></p>
-            <p>We strive to review and respond to all inquiries within 24 to 48 business hours.</p>
+            <p>Support & Inquiries: <strong>velotok67@gmail.com</strong></p>
             <a class="back-home" href="/" onclick="routePage('home', event)">&larr; Back to Home</a>
         </div>
 
-        <!-- 광고 띄울 창 공간 복원 -->
+        <!-- 광고 영역 -->
         <div class="ad-container">
             <span>- Advertisement Space -</span>
         </div>
 
-        <!-- 대규모 풍부한 텍스트 콘텐츠 블로그 섹션 -->
+        <!-- SEO 블로그 콘텐츠 영역 -->
         <article class="content-article" id="blog-section">
             <h2>Comprehensive Guide: Everything You Need to Know About TikTok Content Preservation</h2>
-            <p>TikTok has rapidly evolved into the dominant global ecosystem for creative micro-video content, independent music discovery, viral culture, and educational tutorials. With over a billion active users worldwide, millions of videos are uploaded daily. While the mobile platform provides built-in sharing features, saving files natively often retains platform watermarks, creator usernames, and compression artifacts that limit offline viewing quality.</p>
-            
-            <h3>Why High-Definition Watermark Removal Matters for Creators and Archivists</h3>
-            <p>Many digital creators, educators, and social media analysts download public clips for offline mood-boarding, video essays, academic research, or content compilation. Retaining a clean video stream without overlapping UI elements ensures maximum visual clarity across editing software like Adobe Premiere, CapCut, or DaVinci Resolve. TokDownloader utilizes secure server-side stream extraction to fetch original media files directly from public source paths safely and efficiently.</p>
-
-            <h3>Step-by-Step Instructions: How to Save Videos Across Different Devices</h3>
-            <ol>
-                <li><strong>Locate the Target Video:</strong> Open your TikTok application or web browser, navigate to the desired video, and tap the "Share" button.</li>
-                <li><strong>Copy the Link:</strong> Select the "Copy Link" option from the share menu to save the permanent URL to your device clipboard.</li>
-                <li><strong>Paste into Analyzer:</strong> Return to TokDownloader, paste the copied link into the primary search box at the top of the page.</li>
-                <li><strong>Execute Extraction:</strong> Click the "Analyze" button. Within seconds, optimized download options for MP4 video and MP3 audio will appear.</li>
-                <li><strong>Save to Device:</strong> Click the corresponding download button to store the media directly to your iPhone, Android, Windows PC, or macOS machine.</li>
-            </ol>
-
-            <h3>Frequently Asked Questions (FAQ)</h3>
-            <p><strong>Q: Is TokDownloader entirely free to use?</strong><br>Yes, our tool is 100% free with no subscription tiers, usage caps, or forced software plugins required.</p>
-            <p><strong>Q: Can I extract background audio as an MP3 file?</strong><br>Absolutely. Whenever a video contains a recognized audio track or trending song, our system extracts a secondary MP3 download link automatically.</p>
-            <p><strong>Q: Does this service store copies of downloaded videos?</strong><br>No. We do not host, store, or archive copyrighted media files on our server infrastructure. All processing happens dynamically via public links.</p>
+            <p>TikTok has rapidly evolved into the dominant global ecosystem for creative micro-video content...</p>
         </article>
     </main>
 
@@ -233,7 +225,7 @@
             <a href="/dmca" onclick="routePage('dmca', event)">DMCA Policy</a>
             <a href="/contact" onclick="routePage('contact', event)">Contact Us</a>
         </div>
-        <p>&copy; 2026 TokDownloader. All rights reserved. Secure Cloud Utility.</p>
+        <p>&copy; 2026 VeloTok Downloader. All rights reserved.</p>
     </footer>
 
     <script>
@@ -265,29 +257,17 @@
             document.getElementById('txt-subtitle').innerText = data.subtitle;
             document.getElementById('tiktok-url').placeholder = data.placeholder;
             document.getElementById('txt-btn').innerText = data.btn;
-            
-            if (history.pushState) {
-                const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?lang=' + lang;
-                window.history.pushState({path:newurl},'',newurl);
-            }
         }
 
-        // 싱글 페이지 내에서 가짜 URL 주소 변경(History API) 및 뷰 전환 처리
         function routePage(pageName, event) {
             if (event) event.preventDefault();
-            
-            // 모든 뷰 숨기기
             document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
             document.getElementById('blog-section').style.display = (pageName === 'home') ? 'block' : 'none';
             document.querySelector('.ad-container').style.display = (pageName === 'home') ? 'block' : 'none';
 
-            // 선택된 뷰 보이기
             const targetView = document.getElementById('view-' + pageName);
-            if (targetView) {
-                targetView.classList.add('active');
-            }
+            if (targetView) targetView.classList.add('active');
 
-            // 주소창 URL 변경 (새로고침 없이 SEO 친화적 가상 경로 매핑)
             let path = pageName === 'home' ? '/' : '/' + pageName;
             window.history.pushState({page: pageName}, '', path);
             window.scrollTo(0, 0);
@@ -301,30 +281,11 @@
             }, 100);
         }
 
-        // 뒤로가기/앞로가기 버튼 대응
-        window.onpopstate = function(event) {
-            let path = window.location.pathname.replace('/', '') || 'home';
-            if(document.getElementById('view-' + path)) {
-                routePage(path, null);
-            } else {
-                routePage('home', null);
-            }
-        };
-
-        // 초기 진입 시 경로 체크
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const lang = urlParams.get('lang');
-            if (lang && i18n[lang]) {
-                document.getElementById('langSelect').value = lang;
-                changeLanguage(lang);
-            }
-
-            let path = window.location.pathname.replace('/', '');
-            if(path && document.getElementById('view-' + path)) {
-                routePage(path, null);
-            }
-        };
+        function resetDownloader() {
+            document.getElementById('tiktok-url').value = '';
+            document.getElementById('result-box').style.display = 'none';
+            document.getElementById('tiktok-url').focus();
+        }
 
         async function downloadVideo() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
@@ -332,6 +293,7 @@
             const loading = document.getElementById('loading');
             const dlBtn = document.getElementById('dl-link');
             const dlMusicBtn = document.getElementById('dl-music-link');
+            const thumbnailImg = document.getElementById('video-thumbnail');
             
             if (!urlInput) {
                 alert('Please enter a valid TikTok URL.');
@@ -354,14 +316,20 @@
                     loading.style.display = 'none';
                     document.getElementById('video-title').innerText = result.data.title || 'TikTok Video File';
                     
-                    dlBtn.href = `/api/stream?videoUrl=${encodeURIComponent(videoUrl)}`;
+                    // 썸네일 이미지 세팅
+                    if (result.data.cover) {
+                        thumbnailImg.src = result.data.cover;
+                    }
+
+                    dlBtn.href = videoUrl;
+                    dlBtn.setAttribute('download', 'video.mp4');
 
                     if (result.data.music) {
                         let musicUrl = result.data.music;
                         if (!musicUrl.startsWith('http')) {
                             musicUrl = 'https://www.tikwm.com' + musicUrl;
                         }
-                        dlMusicBtn.href = `/api/stream?videoUrl=${encodeURIComponent(musicUrl)}`;
+                        dlMusicBtn.href = musicUrl;
                         dlMusicBtn.style.display = 'flex';
                     } else {
                         dlMusicBtn.style.display = 'none';
