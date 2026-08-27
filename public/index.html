@@ -298,50 +298,35 @@
         }
 
         // 구글 브라우저(크롬/사파리)에서 다운로드 멈춤 현상을 방지하는 최적화 다운로드 함수
-       async function triggerDownload(event, type) {
+      async function triggerDownload(event, type) {
     if (event) event.preventDefault();
     const btn = event.currentTarget;
-    const targetUrl = btn.href;
+    let targetUrl = btn.href;
     if (!targetUrl || targetUrl === '#') return;
 
     const originalText = btn.innerText;
-    btn.innerText = "Downloading to device...";
+    btn.innerText = "Downloading...";
     btn.disabled = true;
 
     try {
-        // [핵심] 아이폰 브라우저가 새 창으로 재생해버리는 것을 막기 위해 
-        // 안전한 프록시를 통해 파일을 강제로 받아와서 Blob 객체로 만듭니다.
-        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl);
-        const response = await fetch(proxyUrl);
-        
-        if (!response.ok) throw new Error('Download failed');
-
+        // 데이터 링크(Data URI) 방식으로 브라우저를 강제 우회하여 다운로드 트리거
+        const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl));
         const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = blobUrl;
-        a.download = type === 'video' ? 'tiktok_video_nowatermark.mp4' : 'tiktok_audio.mp3';
         
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
         document.body.appendChild(a);
         a.click();
         
-        // 다운로드 트리거 후 메모리 정리
         setTimeout(() => {
             document.body.removeChild(a);
-            window.URL.revokeObjectURL(blobUrl);
-        }, 500);
-
-    } catch (e) {
-        // 만약 프록시 우회가 실패할 경우에만 원본 링크를 새 창으로 열어 수동 저장을 돕습니다.
-        const fallbackA = document.createElement('a');
-        fallbackA.href = targetUrl;
-        fallbackA.target = '_blank';
-        fallbackA.download = type === 'video' ? 'tiktok_video_nowatermark.mp4' : 'tiktok_audio.mp3';
-        document.body.appendChild(fallbackA);
-        fallbackA.click();
-        document.body.removeChild(fallbackA);
+            URL.revokeObjectURL(blobUrl);
+        }, 1000);
+    } catch (err) {
+        // 실패 시 새 창으로 수동 저장 유도
+        window.location.href = targetUrl;
     } finally {
         setTimeout(() => {
             btn.innerText = originalText;
@@ -349,7 +334,6 @@
         }, 1500);
     }
 }
-
         async function downloadVideo() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const resultBox = document.getElementById('result-box');
