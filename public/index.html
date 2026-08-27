@@ -249,7 +249,7 @@
             es: { title: "Descargador de Videos de TikTok", subtitle: "Descarga videos de TikTok sin marca de agua en calidad HD gratis", placeholder: "Pega el enlace del video de TikTok aquí...", btn: "Analizar" },
             fr: { title: "Téléchargeur de Vidéos TikTok", subtitle: "Téléchargez des vidéos TikTok sans filigrane en qualité HD gratuitement", placeholder: "Collez le lien de la vidéo TikTok ici...", btn: "Analyser" },
             ja: { title: "TikTok Video Downloader", subtitle: "ウォーターマークなしのHD TikTok動画を無料でダウンロード", placeholder: "TikTok動画のリンクをここに貼り付け...", btn: "解析する" },
-            pt: { title: "Baixar Videos do TikTok", subtitle: "Baixe vídeos do TikTok sem marca d'água em HD gratuitamente", placeholder: "Cole o link do vídeo do TikTok aqui...", btn: "Analisar" },
+            pt: { title: "Baixar Videos do TikTok", subtitle: "Baixe vídeos do TikTok sans marca d'água em HD gratuitamente", placeholder: "Cole o link do vídeo do TikTok aqui...", btn: "Analisar" },
             ru: { title: "Загрузчик Видео TikTok", subtitle: "Скачивайте видео TikTok без водяных знаков в HD бесплатно", placeholder: "Вставьте ссылку на видео TikTok...", btn: "Анализировать" },
             tr: { title: "TikTok Video İndirici", subtitle: "Filigramsız HD TikTok videolarını ücretsiz indirin", placeholder: "TikTok video bağlantısını buraya yapıştırın...", btn: "Analiz Et" },
             vi: { title: "Tải Video TikTok", subtitle: "Tải video TikTok không logo chất lượng HD miễn phí", placeholder: "Dán liên kết video TikTok vào đây...", btn: "Phân tích" },
@@ -299,32 +299,21 @@
             document.getElementById('tiktok-url').focus();
         }
 
-        async function triggerDownload(event, type) {
+        // [모바일 호환성 패치 완료] 모바일 기기(아이폰/안드로이드) 브라우저 다운로드 이슈 해결
+        function triggerDownload(event, type) {
             event.preventDefault();
             const btn = event.currentTarget;
             const fileUrl = btn.href;
             if (!fileUrl || fileUrl === '#') return;
 
-            const originalText = btn.innerText;
-            btn.innerText = "Downloading...";
-
-            try {
-                const response = await fetch(fileUrl);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(blobUrl);
-                document.body.removeChild(a);
-            } catch (err) {
-                window.open(fileUrl, '_blank');
-            } finally {
-                btn.innerText = originalText;
-            }
+            const a = document.createElement('a');
+            a.href = fileUrl;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
         async function downloadVideo() {
