@@ -301,42 +301,42 @@
         async function triggerDownload(event, type) {
     if (event) event.preventDefault();
     const btn = event.currentTarget;
-    const targetUrl = btn.href;
+    let targetUrl = btn.href;
     if (!targetUrl || targetUrl === '#') return;
+
+    // HTTPS 혼합 콘텐츠 보안 에러 방지
+    if (window.location.protocol === 'https:' && targetUrl.startsWith('http://')) {
+        targetUrl = targetUrl.replace('http://', 'https://');
+    }
 
     const originalText = btn.innerText;
     btn.innerText = "Downloading to device...";
-    const filename = type === 'video' ? 'tiktok_video_nowatermark.mp4' : 'tiktok_audio.mp3';
+    btn.disabled = true;
 
     try {
-        // 구글 브라우저 CORS 보안을 완전히 우회하여 파일 데이터를 통째로 가져온 뒤 강제 저장
-        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl);
-        const response = await fetch(proxyUrl);
-        
-        if (!response.ok) throw new Error('Network response failed');
-
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-
+        // [핵심 수정] Blob이나 fetch를 쓰지 않고, a 태그의 download 속성을 이용해
+        // 아이폰/구글 브라우저가 직접 다운로드 매니저를 통해 파일을 안전하게 받도록 강제합니다.
         const a = document.createElement('a');
         a.style.display = 'none';
-        a.href = blobUrl;
-        a.download = filename;
+        a.href = targetUrl;
+        a.setAttribute('download', type === 'video' ? 'tiktok_video_nowatermark.mp4' : 'tiktok_audio.mp3');
+        a.target = '_blank';
         
         document.body.appendChild(a);
         a.click();
         
         setTimeout(() => {
             document.body.removeChild(a);
-            window.URL.revokeObjectURL(blobUrl);
-        }, 200);
+        }, 300);
 
     } catch (e) {
-        // 만약 프록시 우회가 실패할 경우에만 새 창으로 열기 방어 코드 동작
+        // 예외 발생 시 새 창으로 백업 열기
         window.open(targetUrl, '_blank');
     } finally {
+        // 멈춰있지 않고 버튼이 원래 상태로 부드럽게 복구되도록 설정
         setTimeout(() => {
             btn.innerText = originalText;
+            btn.disabled = false;
         }, 1500);
     }
 }
