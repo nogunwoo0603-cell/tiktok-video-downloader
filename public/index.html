@@ -298,42 +298,51 @@
         }
 
         // 구글 브라우저(크롬/사파리)에서 다운로드 멈춤 현상을 방지하는 최적화 다운로드 함수
-        async function triggerDownload(event, type) {
+       async function triggerDownload(event, type) {
     if (event) event.preventDefault();
     const btn = event.currentTarget;
-    let targetUrl = btn.href;
+    const targetUrl = btn.href;
     if (!targetUrl || targetUrl === '#') return;
-
-    // HTTPS 혼합 콘텐츠 보안 에러 방지
-    if (window.location.protocol === 'https:' && targetUrl.startsWith('http://')) {
-        targetUrl = targetUrl.replace('http://', 'https://');
-    }
 
     const originalText = btn.innerText;
     btn.innerText = "Downloading to device...";
     btn.disabled = true;
 
     try {
-        // [핵심 수정] Blob이나 fetch를 쓰지 않고, a 태그의 download 속성을 이용해
-        // 아이폰/구글 브라우저가 직접 다운로드 매니저를 통해 파일을 안전하게 받도록 강제합니다.
+        // [핵심] 아이폰 브라우저가 새 창으로 재생해버리는 것을 막기 위해 
+        // 안전한 프록시를 통해 파일을 강제로 받아와서 Blob 객체로 만듭니다.
+        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl);
+        const response = await fetch(proxyUrl);
+        
+        if (!response.ok) throw new Error('Download failed');
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+
         const a = document.createElement('a');
         a.style.display = 'none';
-        a.href = targetUrl;
-        a.setAttribute('download', type === 'video' ? 'tiktok_video_nowatermark.mp4' : 'tiktok_audio.mp3');
-        a.target = '_blank';
+        a.href = blobUrl;
+        a.download = type === 'video' ? 'tiktok_video_nowatermark.mp4' : 'tiktok_audio.mp3';
         
         document.body.appendChild(a);
         a.click();
         
+        // 다운로드 트리거 후 메모리 정리
         setTimeout(() => {
             document.body.removeChild(a);
-        }, 300);
+            window.URL.revokeObjectURL(blobUrl);
+        }, 500);
 
     } catch (e) {
-        // 예외 발생 시 새 창으로 백업 열기
-        window.open(targetUrl, '_blank');
+        // 만약 프록시 우회가 실패할 경우에만 원본 링크를 새 창으로 열어 수동 저장을 돕습니다.
+        const fallbackA = document.createElement('a');
+        fallbackA.href = targetUrl;
+        fallbackA.target = '_blank';
+        fallbackA.download = type === 'video' ? 'tiktok_video_nowatermark.mp4' : 'tiktok_audio.mp3';
+        document.body.appendChild(fallbackA);
+        fallbackA.click();
+        document.body.removeChild(fallbackA);
     } finally {
-        // 멈춰있지 않고 버튼이 원래 상태로 부드럽게 복구되도록 설정
         setTimeout(() => {
             btn.innerText = originalText;
             btn.disabled = false;
