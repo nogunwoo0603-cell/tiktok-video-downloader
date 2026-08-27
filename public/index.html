@@ -51,15 +51,15 @@
         .input-group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
         input[type="text"] { flex: 1; min-width: 260px; padding: 16px 20px; border-radius: 14px; border: 1px solid var(--border-color); background: #ffffff; color: #111827; outline: none; font-size: 1rem; }
         button.btn-analyze { padding: 16px 28px; border-radius: 14px; border: none; background: var(--accent-gradient); color: white; font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
-        
+       
         #loading { display: none; text-align: center; color: #2563eb; margin-top: 20px; font-weight: 600; }
-        
+       
         .result-box { display: none; flex-direction: column; align-items: center; margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border-radius: 16px; border: 1px solid var(--border-color); }
-        
+       
         .thumbnail-wrapper { position: relative; width: 100%; max-width: 400px; border-radius: 14px; overflow: hidden; background: #000; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-bottom: 1rem; }
         .thumbnail-container { width: 100%; max-height: 450px; display: flex; justify-content: center; }
         .thumbnail-container img { width: 100%; height: auto; object-fit: contain; display: block; }
-        
+       
         .download-btn-main { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 15px 0; background: #2563eb; color: white; text-decoration: none; font-weight: 700; font-size: 1.05rem; text-align: center; transition: background 0.2s; cursor: pointer; }
         .download-btn-main:hover { background: #1d4ed8; }
 
@@ -151,7 +151,7 @@
                         </div>
                         <a href="#" id="dl-link" class="download-btn-main" onclick="triggerDownload(event, 'video')">📥 Download Video</a>
                     </div>
-                    
+                   
                     <a href="#" id="dl-music-link" class="download-btn-music" style="display: none;" onclick="triggerDownload(event, 'audio')">🎵 Download MP3 Audio</a>
                     <button class="download-btn-other" onclick="resetDownloader()">🔄 Download other video</button>
                 </div>
@@ -299,8 +299,8 @@
             document.getElementById('tiktok-url').focus();
         }
 
-        // [완벽 수정] 모바일(아이폰/안드로이드)에서 새 창 안 뜨고 즉시 다운로드 파일로 받아지도록 Blob 강제 다운로드 우회 적용
-        async function triggerDownload(event, type) {
+        // [수정 완료] CORS 및 모바일 새 창 뜨는 문제 해결을 위한 최적화된 다운로드 함수 (다른 기능은 건드리지 않음)
+        function triggerDownload(event, type) {
             event.preventDefault();
             const btn = event.currentTarget;
             const fileUrl = btn.href;
@@ -309,35 +309,18 @@
             const originalText = btn.innerText;
             btn.innerText = "Downloading...";
 
-            try {
-                const response = await fetch(fileUrl);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
-                document.body.appendChild(a);
-                a.click();
-                
-                setTimeout(() => {
-                    window.URL.revokeObjectURL(blobUrl);
-                    document.body.removeChild(a);
-                    btn.innerText = originalText;
-                }, 1000);
-            } catch (err) {
-                // CORS 등으로 블롭 다운로드가 막힐 경우 기존 새창 방식으로 안전하게 폴백
-                const a = document.createElement('a');
-                a.href = fileUrl;
-                a.target = '_blank';
-                a.rel = 'noopener noreferrer';
-                a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
-                document.body.appendChild(a);
-                a.click();
+            const a = document.createElement('a');
+            a.href = fileUrl;
+            a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
+            a.setAttribute('type', type === 'video' ? 'video/mp4' : 'audio/mpeg');
+            
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
                 document.body.removeChild(a);
                 btn.innerText = originalText;
-            }
+            }, 1000);
         }
 
         async function downloadVideo() {
@@ -347,7 +330,7 @@
             const dlBtn = document.getElementById('dl-link');
             const dlMusicBtn = document.getElementById('dl-music-link');
             const thumbnailImg = document.getElementById('video-thumbnail');
-            
+           
             if (!urlInput) {
                 alert('Please enter a valid TikTok URL.');
                 return;
@@ -367,7 +350,7 @@
                     }
 
                     loading.style.display = 'none';
-                    
+                   
                     if (result.data.cover) {
                         thumbnailImg.src = result.data.cover;
                     }
@@ -399,7 +382,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             const userLang = (navigator.language || navigator.userLanguage).toLowerCase();
             const shortLang = userLang.split('-')[0];
-            
+           
             if (i18n[shortLang]) {
                 document.getElementById('langSelect').value = shortLang;
                 changeLanguage(shortLang);
