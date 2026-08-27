@@ -299,21 +299,45 @@
             document.getElementById('tiktok-url').focus();
         }
 
-        // [모바일 호환성 패치 완료] 모바일 기기(아이폰/안드로이드) 브라우저 다운로드 이슈 해결
-        function triggerDownload(event, type) {
+        // [완벽 수정] 모바일(아이폰/안드로이드)에서 새 창 안 뜨고 즉시 다운로드 파일로 받아지도록 Blob 강제 다운로드 우회 적용
+        async function triggerDownload(event, type) {
             event.preventDefault();
             const btn = event.currentTarget;
             const fileUrl = btn.href;
             if (!fileUrl || fileUrl === '#') return;
 
-            const a = document.createElement('a');
-            a.href = fileUrl;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            const originalText = btn.innerText;
+            btn.innerText = "Downloading...";
+
+            try {
+                const response = await fetch(fileUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
+                document.body.appendChild(a);
+                a.click();
+                
+                setTimeout(() => {
+                    window.URL.revokeObjectURL(blobUrl);
+                    document.body.removeChild(a);
+                    btn.innerText = originalText;
+                }, 1000);
+            } catch (err) {
+                // CORS 등으로 블롭 다운로드가 막힐 경우 기존 새창 방식으로 안전하게 폴백
+                const a = document.createElement('a');
+                a.href = fileUrl;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                btn.innerText = originalText;
+            }
         }
 
         async function downloadVideo() {
@@ -371,7 +395,7 @@
             }
         }
 
-        // [적용완료] 2번 글로벌 자동 언어 맵핑 스크립트 (사이트 진입 시 브라우저 언어 감지 및 자동 변환)
+        // 글로벌 자동 언어 맵핑 스크립트
         window.addEventListener('DOMContentLoaded', () => {
             const userLang = (navigator.language || navigator.userLanguage).toLowerCase();
             const shortLang = userLang.split('-')[0];
