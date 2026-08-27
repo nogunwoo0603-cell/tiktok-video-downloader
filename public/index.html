@@ -298,42 +298,26 @@
         }
 
         // 구글 브라우저(크롬/사파리)에서 다운로드 멈춤 현상을 방지하는 최적화 다운로드 함수
-      async function triggerDownload(event, type) {
+     function triggerDownload(event, type) {
     if (event) event.preventDefault();
     const btn = event.currentTarget;
-    let targetUrl = btn.href;
+    const targetUrl = btn.href; // 틱톡 원본 영상 주소
     if (!targetUrl || targetUrl === '#') return;
 
     const originalText = btn.innerText;
     btn.innerText = "Downloading...";
     btn.disabled = true;
 
-    try {
-        // 데이터 링크(Data URI) 방식으로 브라우저를 강제 우회하여 다운로드 트리거
-        const response = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl));
-        const blob = await response.blob();
-        
-        const blobUrl = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
-        document.body.appendChild(a);
-        a.click();
-        
-        setTimeout(() => {
-            document.body.removeChild(a);
-            URL.revokeObjectURL(blobUrl);
-        }, 1000);
-    } catch (err) {
-        // 실패 시 새 창으로 수동 저장 유도
-        window.location.href = targetUrl;
-    } finally {
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.disabled = false;
-        }, 1500);
-    }
+    // 백엔드 서버의 다운로드 API로 연결
+    const serverDownloadUrl = `/download-video?url=${encodeURIComponent(targetUrl)}`;
+    window.location.href = serverDownloadUrl;
+
+    setTimeout(() => {
+        btn.innerText = originalText;
+        btn.disabled = false;
+    }, 2000);
 }
+
         async function downloadVideo() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const resultBox = document.getElementById('result-box');
