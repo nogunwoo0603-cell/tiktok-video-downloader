@@ -299,40 +299,47 @@
 
         // 구글 브라우저(크롬/사파리)에서 다운로드 멈춤 현상을 방지하는 최적화 다운로드 함수
         async function triggerDownload(event, type) {
-            if (event) event.preventDefault();
-            const btn = event.currentTarget;
-            let fileUrl = btn.href;
-            if (!fileUrl || fileUrl === '#') return;
+    if (event) event.preventDefault();
+    const btn = event.currentTarget;
+    const targetUrl = btn.href;
+    if (!targetUrl || targetUrl === '#') return;
 
-            if (window.location.protocol === 'https:' && fileUrl.startsWith('http://')) {
-                fileUrl = fileUrl.replace('http://', 'https://');
-            }
+    const originalText = btn.innerText;
+    btn.innerText = "Downloading to device...";
+    const filename = type === 'video' ? 'tiktok_video_nowatermark.mp4' : 'tiktok_audio.mp3';
 
-            const originalText = btn.innerText;
-            btn.innerText = "Downloading...";
-            const filename = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
+    try {
+        // 구글 브라우저 CORS 보안을 완전히 우회하여 파일 데이터를 통째로 가져온 뒤 강제 저장
+        const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(targetUrl);
+        const response = await fetch(proxyUrl);
+        
+        if (!response.ok) throw new Error('Network response failed');
 
-            try {
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = fileUrl;
-                a.setAttribute('download', filename);
-                a.target = '_blank';
-                
-                document.body.appendChild(a);
-                a.click();
-                
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                }, 200);
-            } catch (e) {
-                window.open(fileUrl, '_blank');
-            } finally {
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                }, 1000);
-            }
-        }
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = filename;
+        
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(blobUrl);
+        }, 200);
+
+    } catch (e) {
+        // 만약 프록시 우회가 실패할 경우에만 새 창으로 열기 방어 코드 동작
+        window.open(targetUrl, '_blank');
+    } finally {
+        setTimeout(() => {
+            btn.innerText = originalText;
+        }, 1500);
+    }
+}
 
         async function downloadVideo() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
