@@ -297,7 +297,7 @@
             document.getElementById('tiktok-url').focus();
         }
 
-        // [완벽 수정된 다운로드 함수] 브라우저 Blob 방식으로 강제 파일 저장 처리
+        // [구글 크롬/사파리 완벽 호환 다운로드 함수]
         async function triggerDownload(event, type) {
             event.preventDefault();
             const btn = event.currentTarget;
@@ -306,8 +306,10 @@
 
             const originalText = btn.innerText;
             btn.innerText = "Downloading...";
+            const filename = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
 
             try {
+                // 1단계: 브라우저 메모리에 담아 강제 다운로드 시도 (CORS 허용 서버 대응)
                 const response = await fetch(fileUrl);
                 const blob = await response.blob();
                 const blobUrl = window.URL.createObjectURL(blob);
@@ -315,7 +317,7 @@
                 const a = document.createElement('a');
                 a.style.display = 'none';
                 a.href = blobUrl;
-                a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
+                a.download = filename;
                 
                 document.body.appendChild(a);
                 a.click();
@@ -323,14 +325,18 @@
                 window.URL.revokeObjectURL(blobUrl);
                 document.body.removeChild(a);
             } catch (err) {
-                // CORS 등으로 인해 직접 Fetch가 차단될 경우 새 창으로 열기 대신 파일 다운로드 유도
-                const a = document.createElement('a');
-                a.href = fileUrl;
-                a.target = '_blank';
-                a.download = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                // 2단계: 크롬 등에서 CORS 에러로 막힐 경우, 새 탭에서 열어 크롬이 직접 다운로드하도록 유도
+                try {
+                    const a = document.createElement('a');
+                    a.href = fileUrl;
+                    a.setAttribute('download', filename);
+                    a.target = '_blank';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } catch (e) {
+                    window.open(fileUrl, '_blank');
+                }
             } finally {
                 btn.innerText = originalText;
             }
