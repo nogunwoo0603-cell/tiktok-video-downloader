@@ -59,10 +59,10 @@
         .thumbnail-container { width: 100%; max-height: 450px; display: flex; justify-content: center; }
         .thumbnail-container img { width: 100%; height: auto; object-fit: contain; display: block; }
         
-        .download-btn-main { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 15px 0; background: #2563eb; color: white; text-decoration: none; font-weight: 700; font-size: 1.05rem; text-align: center; transition: background 0.2s; cursor: pointer; border: none; }
+        .download-btn-main { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 15px 0; background: #2563eb; color: white; text-decoration: none; font-weight: 700; font-size: 1.05rem; text-align: center; transition: background 0.2s; cursor: pointer; }
         .download-btn-main:hover { background: #1d4ed8; }
 
-        .download-btn-music { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 12px 0; background: #059669; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; margin-bottom: 10px; cursor: pointer; border: none; }
+        .download-btn-music { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 12px 0; background: #059669; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; margin-bottom: 10px; cursor: pointer; }
         .download-btn-music:hover { background: #047857; }
 
         .download-btn-other { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; max-width: 400px; padding: 13px 0; background: #6b7280; color: white; text-decoration: none; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-align: center; border: none; cursor: pointer; }
@@ -148,10 +148,10 @@
                         <div class="thumbnail-container">
                             <img id="video-thumbnail" src="" alt="Video Thumbnail">
                         </div>
-                        <button id="dl-link" class="download-btn-main" onclick="triggerDownload('video')">📥 Download Video</button>
+                        <a href="#" id="dl-link" class="download-btn-main" onclick="triggerDownload(event, 'video')">📥 Download Video</a>
                     </div>
                     
-                    <button id="dl-music-link" class="download-btn-music" style="display: none;" onclick="triggerDownload('audio')">🎵 Download MP3 Audio</button>
+                    <a href="#" id="dl-music-link" class="download-btn-music" style="display: none;" onclick="triggerDownload(event, 'audio')">🎵 Download MP3 Audio</a>
                     <button class="download-btn-other" onclick="resetDownloader()">🔄 Download other video</button>
                 </div>
             </div>
@@ -258,11 +258,8 @@
             ms: { title: "Muat Turun Video TikTok", subtitle: "Muat turun video TikTok tanpa tanda air dalam kualiti HD percuma", placeholder: "Tampal pautan video TikTok di sini...", btn: "Analisis" },
             uk: { title: "Завантажувач Відео TikTok", subtitle: "Завантажуйте відео TikTok без водяного знака в HD безкоштовно", placeholder: "Вставте посилання на видео TikTok...", btn: "Аналізувати" },
             nl: { title: "TikTok Video Downloader", subtitle: "Download TikTok-video's zonder watermerk gratis in HD-kwaliteit", placeholder: "Plak TikTok-videolink hier...", btn: "Analyseren" },
-            ro: { title: "Descărcare Video TikTok", subtitle: "Descărcați videoclipuri TikTok fără filigran în calitate HD gratuit", placeholder: "Lipiți linkul videoclipului TikTok aici...", btn: "Descărcare" }
+            ro: { title: "Descărcare Video TikTok", subtitle: "Descărcați videoclipuri TikTok fără filigran în calitate HD gratuit", placeholder: "Lipiți linkul videoclipului TikTok aici...", btn: "Analizează" }
         };
-
-        let currentVideoUrl = "";
-        let currentMusicUrl = "";
 
         function changeLanguage(lang) {
             const data = i18n[lang] || i18n.en;
@@ -297,77 +294,51 @@
         function resetDownloader() {
             document.getElementById('tiktok-url').value = '';
             document.getElementById('result-box').style.display = 'none';
-            currentVideoUrl = "";
-            currentMusicUrl = "";
             document.getElementById('tiktok-url').focus();
         }
 
-        // [구글/크롬 완벽 대응] 무조건 파일로 저장(Download)되게 만드는 프록시 기반 강제 저장 엔진
-        async function triggerDownload(type) {
-            const targetUrl = type === 'video' ? currentVideoUrl : currentMusicUrl;
-            if (!targetUrl) {
-                alert('다운로드할 미디어가 없습니다.');
-                return;
+        // 구글 브라우저(크롬/사파리)에서 다운로드 멈춤 현상을 방지하는 최적화 다운로드 함수
+        async function triggerDownload(event, type) {
+            if (event) event.preventDefault();
+            const btn = event.currentTarget;
+            let fileUrl = btn.href;
+            if (!fileUrl || fileUrl === '#') return;
+
+            if (window.location.protocol === 'https:' && fileUrl.startsWith('http://')) {
+                fileUrl = fileUrl.replace('http://', 'https://');
             }
 
-            const filename = type === 'video' ? 'tiktok_video_nowatermark.mp4' : 'tiktok_audio.mp3';
-            const btn = type === 'video' ? document.getElementById('dl-link') : document.getElementById('dl-music-link');
             const originalText = btn.innerText;
-            
-            btn.innerText = "Downloading to device...";
-            btn.disabled = true;
+            btn.innerText = "Downloading...";
+            const filename = type === 'video' ? 'tiktok_video.mp4' : 'tiktok_audio.mp3';
 
             try {
-                // 브라우저 CORS 보안 벽을 뚫기 위해 무료 안전 프록시 서버를 경유하여 파일 바이너리(Blob)를 가로챔
-                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
-                const response = await fetch(proxyUrl);
-                
-                if (!response.ok) throw new Error('Network response failed');
-
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                // 가상의 a 태그를 생성해 다운로드 속성을 부여하고 강제 클릭 이벤트 발생
                 const a = document.createElement('a');
                 a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = filename;
+                a.href = fileUrl;
+                a.setAttribute('download', filename);
+                a.target = '_blank';
                 
                 document.body.appendChild(a);
                 a.click();
                 
-                // 다운로드 완료 후 가상 요소 및 메모리 해제
                 setTimeout(() => {
                     document.body.removeChild(a);
-                    window.URL.revokeObjectURL(blobUrl);
                 }, 200);
-
-            } catch (err) {
-                console.warn('프록시 다운로드 실패, 대체 방식을 시도합니다.', err);
-                
-                // 만약 프록시 경유가 막힐 경우 새 창을 열어 사용자가 직접 저장할 수 있도록 유도
-                try {
-                    const a = document.createElement('a');
-                    a.href = targetUrl;
-                    a.target = '_blank';
-                    a.setAttribute('download', filename);
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                } catch (e) {
-                    window.open(targetUrl, '_blank');
-                }
+            } catch (e) {
+                window.open(fileUrl, '_blank');
             } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                }, 1000);
             }
         }
 
-        // 틱톡 링크 분석 함수
         async function downloadVideo() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const resultBox = document.getElementById('result-box');
             const loading = document.getElementById('loading');
+            const dlBtn = document.getElementById('dl-link');
             const dlMusicBtn = document.getElementById('dl-music-link');
             const thumbnailImg = document.getElementById('video-thumbnail');
            
@@ -405,7 +376,6 @@
                     if (window.location.protocol === 'https:' && videoUrl.startsWith('http://')) {
                         videoUrl = videoUrl.replace('http://', 'https://');
                     }
-                    currentVideoUrl = videoUrl;
 
                     loading.style.display = 'none';
                    
@@ -417,6 +387,8 @@
                         thumbnailImg.src = coverUrl;
                     }
 
+                    dlBtn.href = videoUrl;
+
                     if (result.data.music) {
                         let musicUrl = result.data.music;
                         if (!musicUrl.startsWith('http')) {
@@ -425,11 +397,10 @@
                         if (window.location.protocol === 'https:' && musicUrl.startsWith('http://')) {
                             musicUrl = musicUrl.replace('http://', 'https://');
                         }
-                        currentMusicUrl = musicUrl;
+                        dlMusicBtn.href = musicUrl;
                         dlMusicBtn.style.display = 'flex';
                     } else {
                         dlMusicBtn.style.display = 'none';
-                        currentMusicUrl = "";
                     }
 
                     resultBox.style.display = 'flex';
